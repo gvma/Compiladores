@@ -12,7 +12,7 @@ public class Token {
 	 * @param column the column the token has been found
 	 */
 	public Token(TokenCategory tokenCategory, int line, int column, String tokenValue) {
-		this.tokenCategory = tokenCategory;
+		this.tokenCategory = tokenCategory; 
 		this.line = line;
 		this.column = column;
 		this.tokenValue = tokenValue;
