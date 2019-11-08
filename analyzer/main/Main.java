@@ -1,8 +1,9 @@
 package main;
 
 import java.io.*;
-import lexic.Analyzer;
-import token.Token;
+
+import lexical.Lexical;
+import tokens.Token;
 
 public class Main {
 	
@@ -12,12 +13,12 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 		String filePath = args[0];
-		Analyzer analyzer;
 		try {
-			analyzer = new Analyzer(filePath);
-			while (analyzer.hasNextToken()) {
-				Token token = analyzer.nextToken();
-			}
+			Lexical analyzer = new Lexical("C:/Users/guiga/Maratona/hello_world.sft");
+			analyzer.readFile();
+//			while (analyzer.hasNextToken()) {
+//				Token token = analyzer.nextToken();
+//			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
