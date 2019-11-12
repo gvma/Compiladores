@@ -32,7 +32,13 @@ public class Lexical {
 		// constFloat e constInt
 		TokenCategory category = TokenCategory.unknown;
 		String lexeme = Character.toString(codeLine.charAt(column));
-		if (lexeme.matches("\\d")) {
+		if (codeLine.charAt(column) == '.') {
+			++column;
+			while (!LexemeTable.tokenEndings.contains(codeLine.charAt(column))) {
+				lexeme += Character.toString(codeLine.charAt(column));
+				++column;
+			}
+		} else if (lexeme.matches("\\d")) {
 			category = TokenCategory.constInt;
 			char ch;
 			for (ch = nextCharacter(); Character.toString(ch).matches("\\d"); ch = nextCharacter()) {
@@ -56,7 +62,29 @@ public class Lexical {
 					category = TokenCategory.unknown;
 				}
 			}	
+		} else if (lexeme.matches(".")) {
+			if (Character.toString(codeLine.charAt(column)).equals("i")) {
+				lexeme += Character.toString(nextCharacter());
+				if (lexeme.equals("if")) {
+					category = TokenCategory.condIf;
+				} else {
+					lexeme += Character.toString(nextCharacter());
+					if (lexeme.equals("int")) {			
+						lexeme += nextCharacter();
+						if (LexemeTable.tokenEndings.contains(codeLine.charAt(column))) {
+							category = TokenCategory.typeInt;							
+						} else {
+							category = TokenCategory.id;
+						}
+					}
+				}
+//				System.out.println("LEXEME DENTRO = " + lexeme);
+			} else if (Character.toString(codeLine.charAt(column)).equals("f")) {
+				lexeme += Character.toString(nextCharacter());
+				
+			}
 		}
+//		System.out.println("Lexeme length = "+ lexeme.length() + " column = " + column);
 		Token tk = new Token(category, lineCounter, column - lexeme.length() + 1, lexeme);
 		previousToken = tk;
 		System.out.println(tk.toString());
