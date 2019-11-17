@@ -8,7 +8,7 @@ import tokens.TokenCategory;
 public class Lexical {
 
 	private Token previousToken;
-	private int lineCounter = 1, column = 1;
+	private int lineCounter = 1, column = 0;
 	private BufferedReader bufferedReader;
 	private String codeLine = "";
 	
@@ -20,72 +20,76 @@ public class Lexical {
 		File file = new File(filePath);
 		this.bufferedReader = new BufferedReader(new FileReader(file));
 	}
-	
-	private char nextCharacter() {
-		return ++column < codeLine.length() ? codeLine.charAt(column) : '\n';  
-	}
 
+	public String nextCharacter() {
+		if (column < codeLine.length()) {			
+			if (codeLine.charAt(column) != ' ' && codeLine.charAt(column) != '\t' && codeLine.charAt(column) != '\n') {
+				return Character.toString(codeLine.charAt(column));
+			}
+		}
+		return "";
+	}
+	
 	/**
 	 * @return Token the next token if there is one or null otherwise
 	 */
 	public Token nextToken() {
-		// constFloat e constInt
 		TokenCategory category = TokenCategory.unknown;
 		String lexeme = Character.toString(codeLine.charAt(column));
-		if (codeLine.charAt(column) == '.') {
+		if (lexeme.equals(".")) {
 			++column;
 			while (!LexemeTable.tokenEndings.contains(codeLine.charAt(column))) {
-				lexeme += Character.toString(codeLine.charAt(column));
+				lexeme += nextCharacter();
 				++column;
 			}
+			--column;
 		} else if (lexeme.matches("\\d")) {
+			++column;
 			category = TokenCategory.constInt;
-			char ch;
-			for (ch = nextCharacter(); Character.toString(ch).matches("\\d"); ch = nextCharacter()) {
-				lexeme += ch;
+			lexeme += nextCharacter();
+			while (Character.toString(codeLine.charAt(++column)).matches("\\d")) {  // Adiciona a lexeme enquanto for um digito
+				lexeme += nextCharacter();
 			}
-			if (ch == '.') {
-				lexeme += ch;
-				for (ch = nextCharacter(); Character.toString(ch).matches("\\d"); ch = nextCharacter()) {
+			if (codeLine.charAt(column) == '.') {  // Verificando se EH um float
+				lexeme += nextCharacter();
+				++column;
+				while (column < codeLine.length() && Character.toString(codeLine.charAt(column)).matches("\\d")) { // Vai pegando o valor depois do .
 					category = TokenCategory.constFloat;
-					lexeme += ch;
-					// int[] a = [1, 2, 3]; //modificar os tokens arrBegin
+					lexeme += nextCharacter();
+					++column;
 				}
-				if (category.equals(TokenCategory.constInt)) {
+				if (category != TokenCategory.constFloat) {  // Se for por exemplo 123.
 					category = TokenCategory.unknown;
+					--column;
 				}
 			}
-			if (column < codeLine.length()) {				
-				if (!LexemeTable.tokenEndings.contains(ch)) {
-					lexeme += ch;
-					++column;
-					category = TokenCategory.unknown;
-				}
-			}	
 		} else if (lexeme.matches(".")) {
-			if (Character.toString(codeLine.charAt(column)).equals("i")) {
-				lexeme += Character.toString(nextCharacter());
-				if (lexeme.equals("if")) {
-					category = TokenCategory.condIf;
-				} else {
-					lexeme += Character.toString(nextCharacter());
-					if (lexeme.equals("int")) {			
-						lexeme += nextCharacter();
-						if (LexemeTable.tokenEndings.contains(codeLine.charAt(column))) {
-							category = TokenCategory.typeInt;							
-						} else {
-							category = TokenCategory.id;
+			if (lexeme.matches("\\p{ASCII}")) {
+				while (column < codeLine.length()) {		// TODO: Otimizar >> Tentar fazer lendo ate um ending antes de fazer a verificacao no tokenMapping
+					boolean nextChar = false;
+					if (LexemeTable.tokenMapping.containsKey(lexeme)) {
+						nextChar = true;
+						column++;
+						if (column < codeLine.length() && LexemeTable.tokenEndings.contains(codeLine.charAt(column))) {
+							--column;
+							break;
 						}
+						lexeme += nextCharacter();
+					} else if (LexemeTable.tokenEndings.contains(codeLine.charAt(++column))) {
+						--column;
+						break;
+					}			
+					if (!nextChar) {						
+						lexeme += nextCharacter();
 					}
 				}
-//				System.out.println("LEXEME DENTRO = " + lexeme);
-			} else if (Character.toString(codeLine.charAt(column)).equals("f")) {
-				lexeme += Character.toString(nextCharacter());
-				
+				if ((category = LexemeTable.tokenMapping.get(lexeme)) == null) {
+					category = TokenCategory.unknown;
+				}
 			}
 		}
-//		System.out.println("Lexeme length = "+ lexeme.length() + " column = " + column);
-		Token tk = new Token(category, lineCounter, column - lexeme.length() + 1, lexeme);
+
+		Token tk = new Token(category, lineCounter, column - lexeme.length() + 2, lexeme);
 		previousToken = tk;
 		System.out.println(tk.toString());
 		return tk;
@@ -102,13 +106,13 @@ public class Lexical {
 		try {
 			while ((codeLine = bufferedReader.readLine()) != null) {
 				// chamar a funcao de analisar
-				System.out.println(codeLine);
 				String cleanString = "";
 				for (column = 0; column < codeLine.length(); ++column) {
-					if (codeLine.charAt(column) != ' ' && codeLine.charAt(column) != '\t' && codeLine.charAt(column) != '\n') {
-						previousToken = nextToken(); // return true aqui
+					if (codeLine.charAt(column) != ' ' && codeLine.charAt(column) != '\n' && codeLine.charAt(column) != '\t') {
+						previousToken = nextToken();
 					}
 				}
+				column = 0;
 				++lineCounter;
 			}
 		} catch (FileNotFoundException e) {
