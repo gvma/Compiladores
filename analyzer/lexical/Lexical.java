@@ -38,16 +38,62 @@ public class Lexical {
 		String lexeme = Character.toString(codeLine.charAt(column));
 		if (lexeme.equals(".")) {
 			++column;
-			while (!LexemeTable.tokenEndings.contains(codeLine.charAt(column))) {
+			while (column < codeLine.length() && !LexemeTable.tokenEndings.contains(codeLine.charAt(column))) {
 				lexeme += nextCharacter();
 				++column;
+				while (column < codeLine.length()) {
+					if (codeLine.charAt(column) == '\"') {
+						if (codeLine.charAt(column - 1) != '\\' && codeLine.charAt(column) == '\"') {
+							category = TokenCategory.constStr;
+							break;
+						}
+					}
+					++column;
+					if (column < codeLine.length()) {					
+						lexeme += nextCharacter();
+					}
+				}
 			}
 			--column;
-		} else if (lexeme.matches("\\d")) {
+		} else if (lexeme.equals(">") || lexeme.equals("<") || lexeme.equals("!") || lexeme.equals("=")) {
+			if (++column < codeLine.length() && codeLine.charAt(column) == '=') {
+				lexeme += nextCharacter();
+				category = LexemeTable.tokenMapping.get(lexeme);
+			}
+		} else if (lexeme.equals(":") || lexeme.equals("&") || lexeme.equals("|")) {
+			if (++column < codeLine.length()) {
+				char next = codeLine.charAt(column);
+				if (next == lexeme.charAt(0)) {
+					lexeme += nextCharacter();
+					category = LexemeTable.tokenMapping.get(lexeme);
+				}
+			}
+		} else if (lexeme.equals("\"") || lexeme.equals("\'")) {
+			char str = lexeme.charAt(0);
 			++column;
-			category = TokenCategory.constInt;
 			lexeme += nextCharacter();
-			while (Character.toString(codeLine.charAt(++column)).matches("\\d")) {  // Adiciona a lexeme enquanto for um digito
+			while (column < codeLine.length()) {
+				if (codeLine.charAt(column) == str) {
+					if (codeLine.charAt(column - 1) != '\\' && codeLine.charAt(column) == str) {
+						if (str == '\"') {
+							category = TokenCategory.constStr;
+						} else if (str == '\'') {
+							category = TokenCategory.constChar;
+							if (lexeme.length() > 4 || lexeme.length() > 3 && !lexeme.contains("\\")) {
+								category = TokenCategory.unknown;
+							}
+						}
+						break;
+					}
+				}
+				++column;
+				if (column < codeLine.length()) {					
+					lexeme += nextCharacter();
+				}
+			}
+		} else if (lexeme.matches("\\d")) {
+			category = TokenCategory.constInt;
+			while (column + 1 < codeLine.length() && Character.toString(codeLine.charAt(++column)).matches("\\d")) {  // Adiciona a lexeme enquanto for um digito
 				lexeme += nextCharacter();
 			}
 			if (codeLine.charAt(column) == '.') {  // Verificando se EH um float
@@ -60,31 +106,42 @@ public class Lexical {
 				}
 				if (category != TokenCategory.constFloat) {  // Se for por exemplo 123.
 					category = TokenCategory.unknown;
-					--column;
 				}
+			} else if (Character.toString(codeLine.charAt(column)).matches("\\d")) { // Caso não seja float ele tem que ir pra o prox char
+				++column;
 			}
+			while (column < codeLine.length() && !LexemeTable.tokenEndings.contains(codeLine.charAt(column))) { // Adicionar o 
+				lexeme += nextCharacter();
+				++column;
+				category = TokenCategory.unknown;
+			}
+		} else if (lexeme.equals("(") || lexeme.equals(")")) {
+			category = LexemeTable.tokenMapping.get(lexeme);
 		} else if (lexeme.matches(".")) {
 			if (lexeme.matches("\\p{ASCII}")) {
 				while (column < codeLine.length()) {		// TODO: Otimizar >> Tentar fazer lendo ate um ending antes de fazer a verificacao no tokenMapping
 					boolean nextChar = false;
+					++column;
 					if (LexemeTable.tokenMapping.containsKey(lexeme)) {
 						nextChar = true;
-						column++;
 						if (column < codeLine.length() && LexemeTable.tokenEndings.contains(codeLine.charAt(column))) {
 							--column;
 							break;
 						}
 						lexeme += nextCharacter();
-					} else if (LexemeTable.tokenEndings.contains(codeLine.charAt(++column))) {
+					} else if (column < codeLine.length() && LexemeTable.tokenEndings.contains(codeLine.charAt(column))) {
 						--column;
 						break;
-					}			
+					}
 					if (!nextChar) {						
 						lexeme += nextCharacter();
 					}
 				}
 				if ((category = LexemeTable.tokenMapping.get(lexeme)) == null) {
 					category = TokenCategory.unknown;
+				}
+				if (category == TokenCategory.unknown && lexeme.matches("[_a-zA-Z]?[0-9_a-zA-Z]*")) {
+					category = TokenCategory.id;
 				}
 			}
 		}
@@ -105,7 +162,6 @@ public class Lexical {
 	public void readFile() {
 		try {
 			while ((codeLine = bufferedReader.readLine()) != null) {
-				// chamar a funcao de analisar
 				String cleanString = "";
 				for (column = 0; column < codeLine.length(); ++column) {
 					if (codeLine.charAt(column) != ' ' && codeLine.charAt(column) != '\n' && codeLine.charAt(column) != '\t') {
