@@ -56,7 +56,8 @@ public class Lexical {
 			}
 			--column;
 		} else if (lexeme.equals(">") || lexeme.equals("<") || lexeme.equals("!") || lexeme.equals("=")) {
-			if (++column < codeLine.length() && codeLine.charAt(column) == '=') {
+			if (column + 1 < codeLine.length() && codeLine.charAt(column + 1) == '=') {
+				++column;
 				lexeme += nextCharacter();
 			}
 			category = LexemeTable.tokenMapping.get(lexeme);
@@ -122,33 +123,36 @@ public class Lexical {
 			category = LexemeTable.tokenMapping.get(lexeme);
 		} else if (lexeme.matches(".")) {
 			if (lexeme.matches("\\p{ASCII}")) {
-				while (column < codeLine.length()) {		// TODO: Otimizar >> Tentar fazer lendo ate um ending antes de fazer a verificacao no tokenMapping
-					boolean nextChar = false;
-					++column;
-					if (LexemeTable.tokenMapping.containsKey(lexeme)) {
-						nextChar = true;
-						if (column < codeLine.length() && LexemeTable.tokenEndings.contains(codeLine.charAt(column))) {
+				if (lexeme.equals(";")) {
+					category = TokenCategory.EOL;
+				} else {					
+					while (column < codeLine.length()) { // TODO: Otimizar >> Tentar fazer lendo ate um ending antes de fazer a verificacao no tokenMapping
+						boolean nextChar = false;
+						++column;
+						if (LexemeTable.tokenMapping.containsKey(lexeme)) {
+							nextChar = true;
+							if (column < codeLine.length() && LexemeTable.tokenEndings.contains(codeLine.charAt(column))) {
+								--column;
+								break;
+							}
+							lexeme += nextCharacter();
+						} else if (column < codeLine.length() && LexemeTable.tokenEndings.contains(codeLine.charAt(column))) {
 							--column;
 							break;
 						}
-						lexeme += nextCharacter();
-					} else if (column < codeLine.length() && LexemeTable.tokenEndings.contains(codeLine.charAt(column))) {
-						--column;
-						break;
+						if (!nextChar) {						
+							lexeme += nextCharacter();
+						}
 					}
-					if (!nextChar) {						
-						lexeme += nextCharacter();
+					if ((category = LexemeTable.tokenMapping.get(lexeme)) == null) {
+						category = TokenCategory.unknown;
 					}
-				}
-				if ((category = LexemeTable.tokenMapping.get(lexeme)) == null) {
-					category = TokenCategory.unknown;
-				}
-				if (category == TokenCategory.unknown && lexeme.matches("[_a-zA-Z]?[0-9_a-zA-Z]*")) {
-					category = TokenCategory.id;
+					if (category == TokenCategory.unknown && lexeme.matches("[_a-zA-Z]?[0-9_a-zA-Z]*")) {
+						category = TokenCategory.id;
+					}
 				}
 			}
 		}
-
 		Token tk = new Token(category, lineCounter, column - lexeme.length() + 2, lexeme);
 		previousToken = tk;
 		System.out.println(tk.toString());
