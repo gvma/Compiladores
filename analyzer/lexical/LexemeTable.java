@@ -59,6 +59,8 @@ public class LexemeTable {
 		tokenMapping.put("else",TokenCategory.condElse); //ok
 		tokenMapping.put("read",TokenCategory.scan); //ok
 		tokenMapping.put("print",TokenCategory.print); //ok
+		tokenMapping.put("[",TokenCategory.arrBegin); //ok
+		tokenMapping.put("]",TokenCategory.arrEnd); //ok
 		tokenEndings.add(';');
 		tokenEndings.add(' ');
 		tokenEndings.add('(');
@@ -85,6 +87,8 @@ public class LexemeTable {
 		tokenEndings.add('(');
 		tokenEndings.add(')');
 		tokenEndings.add(',');
+		tokenEndings.add('[');
+		tokenEndings.add(']');
 	}
 	
 }

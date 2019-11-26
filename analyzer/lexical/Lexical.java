@@ -58,8 +58,8 @@ public class Lexical {
 		} else if (lexeme.equals(">") || lexeme.equals("<") || lexeme.equals("!") || lexeme.equals("=")) {
 			if (++column < codeLine.length() && codeLine.charAt(column) == '=') {
 				lexeme += nextCharacter();
-				category = LexemeTable.tokenMapping.get(lexeme);
 			}
+			category = LexemeTable.tokenMapping.get(lexeme);
 		} else if (lexeme.equals(":") || lexeme.equals("&") || lexeme.equals("|")) {
 			if (++column < codeLine.length()) {
 				char next = codeLine.charAt(column);
@@ -93,10 +93,10 @@ public class Lexical {
 			}
 		} else if (lexeme.matches("\\d")) {
 			category = TokenCategory.constInt;
-			while (column + 1 < codeLine.length() && Character.toString(codeLine.charAt(++column)).matches("\\d")) {  // Adiciona a lexeme enquanto for um digito
+			while (++column < codeLine.length() && Character.toString(codeLine.charAt(column)).matches("\\d")) {  // Adiciona a lexeme enquanto for um digito
 				lexeme += nextCharacter();
 			}
-			if (codeLine.charAt(column) == '.') {  // Verificando se EH um float
+			if (column < codeLine.length() && codeLine.charAt(column) == '.') {  // Verificando se EH um float
 				lexeme += nextCharacter();
 				++column;
 				while (column < codeLine.length() && Character.toString(codeLine.charAt(column)).matches("\\d")) { // Vai pegando o valor depois do .
@@ -107,7 +107,7 @@ public class Lexical {
 				if (category != TokenCategory.constFloat) {  // Se for por exemplo 123.
 					category = TokenCategory.unknown;
 				}
-			} else if (Character.toString(codeLine.charAt(column)).matches("\\d")) { // Caso não seja float ele tem que ir pra o prox char
+			} else if (column < codeLine.length() && Character.toString(codeLine.charAt(column)).matches("\\d")) { // Caso não seja float ele tem que ir pra o prox char
 				++column;
 			}
 			while (column < codeLine.length() && !LexemeTable.tokenEndings.contains(codeLine.charAt(column))) { // Adicionar o 
@@ -115,7 +115,10 @@ public class Lexical {
 				++column;
 				category = TokenCategory.unknown;
 			}
-		} else if (lexeme.equals("(") || lexeme.equals(")")) {
+			if (column < codeLine.length() && LexemeTable.tokenEndings.contains(codeLine.charAt(column))) {
+				--column;
+			}
+		} else if (lexeme.equals("(") || lexeme.equals(")") || lexeme.equals("[") || lexeme.equals("]")) {
 			category = LexemeTable.tokenMapping.get(lexeme);
 		} else if (lexeme.matches(".")) {
 			if (lexeme.matches("\\p{ASCII}")) {
