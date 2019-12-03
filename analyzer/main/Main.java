@@ -14,7 +14,7 @@ public class Main {
 	public static void main(String[] args) {
 		String filePath = args[0];
 		try {
-			Lexical analyzer = new Lexical("C:/Users/guiga/Maratona/hello_world.sft");
+			Lexical analyzer = new Lexical("C:/Users/guiga/Documents/Compiladores/examples/shell_sort.sft");
 			analyzer.readFile();
 //			while (analyzer.hasNextToken()) {
 //				Token token = analyzer.nextToken();

@@ -21,6 +21,13 @@ public class Lexical {
 		this.bufferedReader = new BufferedReader(new FileReader(file));
 	}
 
+	public String nextCharacterConsts() {
+		if (column < codeLine.length()) {		
+			return Character.toString(codeLine.charAt(column));
+		}
+		return "";
+	}
+	
 	public String nextCharacter() {
 		if (column < codeLine.length()) {			
 			if (codeLine.charAt(column) != ' ' && codeLine.charAt(column) != '\t' && codeLine.charAt(column) != '\n') {
@@ -71,8 +78,9 @@ public class Lexical {
 			}
 		} else if (lexeme.equals("\"") || lexeme.equals("\'")) {
 			char str = lexeme.charAt(0);
+			int initialColumn = column;
 			++column;
-			lexeme += nextCharacter();
+			lexeme += nextCharacterConsts();
 			while (column < codeLine.length()) {
 				if (codeLine.charAt(column) == str) {
 					if (codeLine.charAt(column - 1) != '\\' && codeLine.charAt(column) == str) {
@@ -88,8 +96,8 @@ public class Lexical {
 					}
 				}
 				++column;
-				if (column < codeLine.length()) {					
-					lexeme += nextCharacter();
+				if (column < codeLine.length()) {
+					lexeme += nextCharacterConsts();
 				}
 			}
 		} else if (lexeme.matches("\\d")) {

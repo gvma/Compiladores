@@ -43,7 +43,7 @@ public class Token {
 	}
 
 	@Override
-	public String toString() {
+	public String toString() { 
 		String format = "          [%04d, %04d] (%04d, %20s) {%s}";
 		return String.format(format, line, column, tokenCategory.ordinal(), tokenCategory.toString(), id);
 	}
