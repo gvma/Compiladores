@@ -8,6 +8,7 @@ import tokens.TokenCategory;
 public class Lexical {
 
 	public Token previousToken;
+	public Token currentToken;
 	public int lineCounter = 1, column = 0;
 	public BufferedReader bufferedReader;
 	public String codeLine = "";
@@ -17,8 +18,7 @@ public class Lexical {
 	 * @throws IOException if filePath is invalid
 	 */
 	public Lexical(String filePath) throws IOException {
-		File file = new File(filePath);
-		this.bufferedReader = new BufferedReader(new FileReader(file));
+		this.bufferedReader = new BufferedReader(new FileReader(new File(filePath)));
 	}
 	
 	private String nextCharacter() {
@@ -118,7 +118,7 @@ public class Lexical {
 		} else if (lexeme.matches(".")) {
 			if (lexeme.matches("\\p{ASCII}")) {
 				if (lexeme.equals(";")) {
-					category = TokenCategory.EOL;
+					category = TokenCategory.semicolon;
 				} else {
 					while (column < codeLine.length()) {
 						boolean nextChar = false;
@@ -147,9 +147,24 @@ public class Lexical {
 				}
 			}
 		}
-		Token tk = new Token(category, lineCounter, column - lexeme.length() + 2, lexeme);
-		previousToken = tk;
-		return tk;
+		currentToken = new Token(category, lineCounter, column - lexeme.length() + 2, lexeme);
+		previousToken = currentToken;
+		return currentToken;
 	}
 	
+	public boolean hasNextLine() {
+		try {
+			codeLine = bufferedReader.readLine();
+			String format = "%4d  %s\n";
+			if (codeLine == null) {
+				System.out.printf(format, lineCounter, "EOF");
+				currentToken.setTokenCategory(TokenCategory.EOF);
+			} else {
+				System.out.printf(format, lineCounter, codeLine);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return codeLine != null ? true : false;
+	}
 }

@@ -13,7 +13,6 @@ public class Main {
 	 * @param args the filePath
 	 */
 	public static void main(String[] args) {
-		Syntactic syntacticAnalyzer = new Syntactic(args);
+			Syntactic syntacticAnalyzer = new Syntactic(args);
 	}
-	
 }

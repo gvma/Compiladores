@@ -12,7 +12,7 @@ public class LexemeTable {
 	public static List<Character> tokenEndings = new ArrayList<Character>();
 	
 	static {
-		tokenMapping.put(":", TokenCategory.twoPt); //ok
+		tokenMapping.put(":", TokenCategory.colon); //ok
 		tokenMapping.put("true", TokenCategory.constBool); //ok
 		tokenMapping.put("false", TokenCategory.constBool); //ok
 		tokenMapping.put("fun",TokenCategory.funDef); //ok
@@ -46,7 +46,7 @@ public class LexemeTable {
 		tokenMapping.put("!",TokenCategory.opNot); //ok
 		tokenMapping.put("::",TokenCategory.opConcat); //nope
 		tokenMapping.put("=",TokenCategory.opAttrib); //ok
-		tokenMapping.put(";",TokenCategory.EOL); //ok
+		tokenMapping.put(";",TokenCategory.semicolon); //ok
 		tokenMapping.put("for",TokenCategory.forLoop); //ok
 		tokenMapping.put("while",TokenCategory.whileLoop); //ok
 		tokenMapping.put("if",TokenCategory.condIf); //ok
