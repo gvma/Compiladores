@@ -20,15 +20,8 @@ public class Lexical {
 		File file = new File(filePath);
 		this.bufferedReader = new BufferedReader(new FileReader(file));
 	}
-
-	public String nextCharacterConsts() {
-		if (column < codeLine.length()) {		
-			return Character.toString(codeLine.charAt(column));
-		}
-		return "";
-	}
 	
-	public String nextCharacter() {
+	private String nextCharacter() {
 		if (column < codeLine.length()) {			
 			return Character.toString(codeLine.charAt(column));
 		}
@@ -48,7 +41,7 @@ public class Lexical {
 				++column;
 				while (column < codeLine.length()) {
 					if (codeLine.charAt(column) == '\"') {
-						if (codeLine.charAt(column - 1) != '\\' && codeLine.charAt(column) == '\"') {
+						if (codeLine.charAt(column - 1) != '\\') {
 							category = TokenCategory.constStr;
 							break;
 						}
@@ -85,7 +78,7 @@ public class Lexical {
 			char str = lexeme.charAt(0);
 			int initialColumn = column;
 			++column;
-			lexeme += nextCharacterConsts();
+			lexeme += nextCharacter();
 			while (column < codeLine.length()) {
 				if (codeLine.charAt(column) == str) {
 					if (codeLine.charAt(column - 1) != '\\' && codeLine.charAt(column) == str) {
@@ -102,7 +95,7 @@ public class Lexical {
 				}
 				++column;
 				if (column < codeLine.length()) {
-					lexeme += nextCharacterConsts();
+					lexeme += nextCharacter();
 				}
 			}
 		} else if (lexeme.matches("\\d")) {
@@ -139,7 +132,7 @@ public class Lexical {
 				if (lexeme.equals(";")) {
 					category = TokenCategory.EOL;
 				} else {
-					while (column < codeLine.length()) { // TODO: Otimizar >> Tentar fazer lendo ate um ending antes de fazer a verificacao no tokenMapping
+					while (column < codeLine.length()) {
 						boolean nextChar = false;
 						++column;
 						if (LexemeTable.tokenMapping.containsKey(lexeme)) {
