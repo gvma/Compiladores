@@ -7,10 +7,10 @@ import tokens.TokenCategory;
 @SuppressWarnings("unused")
 public class Lexical {
 
-	private Token previousToken;
-	private int lineCounter = 1, column = 0;
-	private BufferedReader bufferedReader;
-	private String codeLine = "";
+	public Token previousToken;
+	public int lineCounter = 1, column = 0;
+	public BufferedReader bufferedReader;
+	public String codeLine = "";
 	
 	/**
 	 * @param filePath the file path
@@ -30,9 +30,7 @@ public class Lexical {
 	
 	public String nextCharacter() {
 		if (column < codeLine.length()) {			
-			if (codeLine.charAt(column) != ' ' && codeLine.charAt(column) != '\t' && codeLine.charAt(column) != '\n') {
-				return Character.toString(codeLine.charAt(column));
-			}
+			return Character.toString(codeLine.charAt(column));
 		}
 		return "";
 	}
@@ -62,18 +60,25 @@ public class Lexical {
 				}
 			}
 			--column;
-		} else if (lexeme.equals(">") || lexeme.equals("<") || lexeme.equals("!") || lexeme.equals("=")) {
+		}else if (lexeme.equals(">") || lexeme.equals("<") || lexeme.equals("!") || lexeme.equals("=")) {
 			if (column + 1 < codeLine.length() && codeLine.charAt(column + 1) == '=') {
 				++column;
 				lexeme += nextCharacter();
 			}
 			category = LexemeTable.tokenMapping.get(lexeme);
 		} else if (lexeme.equals(":") || lexeme.equals("&") || lexeme.equals("|")) {
-			if (++column < codeLine.length()) {
+			if (column < codeLine.length()) {
+				++column;
 				char next = codeLine.charAt(column);
 				if (next == lexeme.charAt(0)) {
 					lexeme += nextCharacter();
 					category = LexemeTable.tokenMapping.get(lexeme);
+				} else {
+					if (LexemeTable.tokenMapping.get(lexeme) != null) {
+						category = LexemeTable.tokenMapping.get(lexeme);
+					} else {
+						category = TokenCategory.unknown;
+					}
 				}
 			}
 		} else if (lexeme.equals("\"") || lexeme.equals("\'")) {
@@ -133,7 +138,7 @@ public class Lexical {
 			if (lexeme.matches("\\p{ASCII}")) {
 				if (lexeme.equals(";")) {
 					category = TokenCategory.EOL;
-				} else {					
+				} else {
 					while (column < codeLine.length()) { // TODO: Otimizar >> Tentar fazer lendo ate um ending antes de fazer a verificacao no tokenMapping
 						boolean nextChar = false;
 						++column;
@@ -163,34 +168,7 @@ public class Lexical {
 		}
 		Token tk = new Token(category, lineCounter, column - lexeme.length() + 2, lexeme);
 		previousToken = tk;
-		System.out.println(tk.toString());
 		return tk;
-	}
-	
-	/**
-	 * @return boolean true if there is another token or false otherwise
-	 */
-	public boolean hasNextToken() {
-		return true;
-	}
-	
-	public void readFile() {
-		try {
-			while ((codeLine = bufferedReader.readLine()) != null) {
-				String cleanString = "";
-				for (column = 0; column < codeLine.length(); ++column) {
-					if (codeLine.charAt(column) != ' ' && codeLine.charAt(column) != '\n' && codeLine.charAt(column) != '\t') {
-						previousToken = nextToken();
-					}
-				}
-				column = 0;
-				++lineCounter;
-			}
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 	
 }

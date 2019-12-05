@@ -1,0 +1,32 @@
+int n = 1000;
+
+fun void shellSort(int arr(n)) {
+	int gap = n / 2;
+	while (gap > 0) {
+		for (int i :(gap, n, 1)) {
+			int temp = arr[i];
+			int j = i;
+			while (j >= gap && (arr[j - gap] > temp)) {
+				arr[j] = arr[j - gap];
+				j = j - gap;
+			}
+			arr[j] = temp; 			
+		}
+		gap = gap / 2; 
+	}
+}
+
+fun int main() {
+	int arr(n);
+	read(arr);
+	for (int i : (0, n, 1)) {
+		print(arr[i]);
+		print(" ");
+	}
+	shellSort(arr);
+	for (int i : (0, n, 1)) {
+		print(arr[i]);
+		print(" ");
+	}
+	return 0;
+}

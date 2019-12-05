@@ -12,6 +12,7 @@ public class LexemeTable {
 	public static List<Character> tokenEndings = new ArrayList<Character>();
 	
 	static {
+		tokenMapping.put(":", TokenCategory.twoPt); //ok
 		tokenMapping.put("true", TokenCategory.constBool); //ok
 		tokenMapping.put("false", TokenCategory.constBool); //ok
 		tokenMapping.put("fun",TokenCategory.funDef); //ok
@@ -26,11 +27,6 @@ public class LexemeTable {
 		tokenMapping.put("char",TokenCategory.typeChar); //ok
 		tokenMapping.put("void",TokenCategory.typeVoid); //ok
 		tokenMapping.put("string",TokenCategory.typeStr); //ok
-		tokenMapping.put("int[]",TokenCategory.arrInt); //ok
-		tokenMapping.put("float[]",TokenCategory.arrFloat); //ok
-		tokenMapping.put("bool[]",TokenCategory.arrBool); //ok
-		tokenMapping.put("char[]",TokenCategory.arrChar); //ok
-		tokenMapping.put("string[]",TokenCategory.arrString); //ok
 		tokenMapping.put("{",TokenCategory.beginScope); //ok
 		tokenMapping.put("}",TokenCategory.endScope); //ok
 		tokenMapping.put("+",TokenCategory.opAdd); //ok
@@ -47,7 +43,6 @@ public class LexemeTable {
 		tokenMapping.put("!=",TokenCategory.opNotEqual); //not and attrib
 		tokenMapping.put("&&",TokenCategory.opAnd); //nope
 		tokenMapping.put("||",TokenCategory.opOr); //nope
-		tokenMapping.put("-",TokenCategory.opNegative); //yep but nope
 		tokenMapping.put("!",TokenCategory.opNot); //ok
 		tokenMapping.put("::",TokenCategory.opConcat); //nope
 		tokenMapping.put("=",TokenCategory.opAttrib); //ok
@@ -89,6 +84,7 @@ public class LexemeTable {
 		tokenEndings.add(',');
 		tokenEndings.add('[');
 		tokenEndings.add(']');
+		tokenEndings.add(':');
 	}
 	
 }
