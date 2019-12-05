@@ -39,18 +39,6 @@ public class Lexical {
 			while (column < codeLine.length() && !LexemeTable.tokenEndings.contains(codeLine.charAt(column))) {
 				lexeme += nextCharacter();
 				++column;
-				while (column < codeLine.length()) {
-					if (codeLine.charAt(column) == '\"') {
-						if (codeLine.charAt(column - 1) != '\\') {
-							category = TokenCategory.constStr;
-							break;
-						}
-					}
-					++column;
-					if (column < codeLine.length()) {					
-						lexeme += nextCharacter();
-					}
-				}
 			}
 			--column;
 		}else if (lexeme.equals(">") || lexeme.equals("<") || lexeme.equals("!") || lexeme.equals("=")) {
