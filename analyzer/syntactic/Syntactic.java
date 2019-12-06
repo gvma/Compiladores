@@ -17,11 +17,11 @@ public class Syntactic {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			while (lexicalAnalyzer.hasNextLine()) {
+			while (lexicalAnalyzer != null && lexicalAnalyzer.hasNextLine()) {
 				for (lexicalAnalyzer.column = 0; lexicalAnalyzer.column < lexicalAnalyzer.codeLine.length(); ++lexicalAnalyzer.column) {
-					if (lexicalAnalyzer.codeLine.charAt(lexicalAnalyzer.column) != ' ' && 
-							lexicalAnalyzer.codeLine.charAt(lexicalAnalyzer.column) != '\n' &&
-							lexicalAnalyzer.codeLine.charAt(lexicalAnalyzer.column) != '\t') {
+					if (lexicalAnalyzer.codeLine.charAt(lexicalAnalyzer.column) != ' '
+						&& lexicalAnalyzer.codeLine.charAt(lexicalAnalyzer.column) != '\n'
+						&& lexicalAnalyzer.codeLine.charAt(lexicalAnalyzer.column) != '\t') {
 						lexicalAnalyzer.previousToken = lexicalAnalyzer.nextToken();
 						System.out.println(lexicalAnalyzer.currentToken.toString());
 					}
@@ -29,7 +29,9 @@ public class Syntactic {
 				lexicalAnalyzer.column = 0;
 				++lexicalAnalyzer.lineCounter;
 			}
-			lexicalAnalyzer.codeLine = "";
+			if (lexicalAnalyzer != null) {
+				lexicalAnalyzer.codeLine = "";
+			}
 		}
 	}
 }
