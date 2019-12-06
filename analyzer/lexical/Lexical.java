@@ -10,7 +10,7 @@ public class Lexical {
 	public Token previousToken;
 	public Token currentToken;
 	public int lineCounter = 1, column = 0;
-	public BufferedReader bufferedReader;
+	private BufferedReader bufferedReader;
 	public String codeLine = "";
 	
 	/**
@@ -48,18 +48,16 @@ public class Lexical {
 			}
 			category = LexemeTable.tokenMapping.get(lexeme);
 		} else if (lexeme.equals(":") || lexeme.equals("&") || lexeme.equals("|")) {
-			if (column < codeLine.length()) {
-				++column;
-				char next = codeLine.charAt(column);
-				if (next == lexeme.charAt(0)) {
-					lexeme += nextCharacter();
+			++column;
+			char next = codeLine.charAt(column);
+			if (next == lexeme.charAt(0)) {
+				lexeme += nextCharacter();
+				category = LexemeTable.tokenMapping.get(lexeme);
+			} else {
+				if (LexemeTable.tokenMapping.get(lexeme) != null) {
 					category = LexemeTable.tokenMapping.get(lexeme);
 				} else {
-					if (LexemeTable.tokenMapping.get(lexeme) != null) {
-						category = LexemeTable.tokenMapping.get(lexeme);
-					} else {
-						category = TokenCategory.unknown;
-					}
+					category = TokenCategory.unknown;
 				}
 			}
 		} else if (lexeme.equals("\"") || lexeme.equals("\'")) {
@@ -165,6 +163,6 @@ public class Lexical {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return codeLine != null ? true : false;
+		return codeLine != null;
 	}
 }
