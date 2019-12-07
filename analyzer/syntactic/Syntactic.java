@@ -17,20 +17,8 @@ public class Syntactic {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			while (lexicalAnalyzer != null && lexicalAnalyzer.hasNextLine()) {
-				for (lexicalAnalyzer.column = 0; lexicalAnalyzer.column < lexicalAnalyzer.codeLine.length(); ++lexicalAnalyzer.column) {
-					if (lexicalAnalyzer.codeLine.charAt(lexicalAnalyzer.column) != ' '
-						&& lexicalAnalyzer.codeLine.charAt(lexicalAnalyzer.column) != '\n'
-						&& lexicalAnalyzer.codeLine.charAt(lexicalAnalyzer.column) != '\t') {
-						lexicalAnalyzer.previousToken = lexicalAnalyzer.nextToken();
-						System.out.println(lexicalAnalyzer.currentToken.toString());
-					}
-				}
-				lexicalAnalyzer.column = 0;
-				++lexicalAnalyzer.lineCounter;
-			}
-			if (lexicalAnalyzer != null) {
-				lexicalAnalyzer.codeLine = "";
+			while (lexicalAnalyzer.hasNextToken()) {
+				System.out.println(lexicalAnalyzer.nextToken().toString());
 			}
 		}
 	}

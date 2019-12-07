@@ -9,7 +9,7 @@ public class Lexical {
 
 	public Token previousToken;
 	public Token currentToken;
-	public int lineCounter = 1, column = 0;
+	public int lineCounter = 1, column = 0, lastColumn = 0;
 	private BufferedReader bufferedReader;
 	public String codeLine = "";
 	
@@ -33,21 +33,28 @@ public class Lexical {
 	 */
 	public Token nextToken() {
 		TokenCategory category = TokenCategory.unknown;
+		while (codeLine.charAt(column) == ' ' || codeLine.charAt(column) == '\t') {
+			++column;
+		}
 		String lexeme = Character.toString(codeLine.charAt(column));
+		boolean endOfFile = true;
 		if (lexeme.equals(".")) {
+			endOfFile = false;
 			++column;
 			while (column < codeLine.length() && !LexemeTable.tokenEndings.contains(codeLine.charAt(column))) {
 				lexeme += nextCharacter();
 				++column;
 			}
 			--column;
-		}else if (lexeme.equals(">") || lexeme.equals("<") || lexeme.equals("!") || lexeme.equals("=")) {
+		} else if (lexeme.equals(">") || lexeme.equals("<") || lexeme.equals("!") || lexeme.equals("=")) {
+			endOfFile = false;
 			if (column + 1 < codeLine.length() && codeLine.charAt(column + 1) == '=') {
 				++column;
 				lexeme += nextCharacter();
 			}
 			category = LexemeTable.tokenMapping.get(lexeme);
 		} else if (lexeme.equals(":") || lexeme.equals("&") || lexeme.equals("|")) {
+			endOfFile = false;
 			++column;
 			char next = codeLine.charAt(column);
 			if (next == lexeme.charAt(0)) {
@@ -61,6 +68,7 @@ public class Lexical {
 				}
 			}
 		} else if (lexeme.equals("\"") || lexeme.equals("\'")) {
+			endOfFile = false;
 			char str = lexeme.charAt(0);
 			int initialColumn = column;
 			++column;
@@ -85,6 +93,7 @@ public class Lexical {
 				}
 			}
 		} else if (lexeme.matches("\\d")) {
+			endOfFile = false;
 			category = TokenCategory.constInt;
 			while (++column < codeLine.length() && Character.toString(codeLine.charAt(column)).matches("\\d")) {  // Adiciona a lexeme enquanto for um digito
 				lexeme += nextCharacter();
@@ -100,7 +109,7 @@ public class Lexical {
 				if (category != TokenCategory.constFloat) {  // Se for por exemplo 123.
 					category = TokenCategory.unknown;
 				}
-			} else if (column < codeLine.length() && Character.toString(codeLine.charAt(column)).matches("\\d")) { // Caso não seja float ele tem que ir pra o prox char
+			} else if (column < codeLine.length() && Character.toString(codeLine.charAt(column)).matches("\\d")) { // Caso nÃ£o seja float ele tem que ir pra o prox char
 				++column;
 			}
 			while (column < codeLine.length() && !LexemeTable.tokenEndings.contains(codeLine.charAt(column))) { // Adicionar o 
@@ -112,8 +121,10 @@ public class Lexical {
 				--column;
 			}
 		} else if (lexeme.equals("(") || lexeme.equals(")") || lexeme.equals("[") || lexeme.equals("]")) {
+			endOfFile = false;
 			category = LexemeTable.tokenMapping.get(lexeme);
 		} else if (lexeme.matches(".")) {
+			endOfFile = false;
 			if (lexeme.matches("\\p{ASCII}")) {
 				if (lexeme.equals(";")) {
 					category = TokenCategory.semicolon;
@@ -145,24 +156,62 @@ public class Lexical {
 				}
 			}
 		}
+		if (endOfFile) {
+			category = TokenCategory.EOF;
+		}
+		if (column == codeLine.length()) {
+			if (hasNextLine()) {				
+				column = 0;
+				printCodeLine(codeLine);
+			}
+		} else {
+			++column;
+		}
 		currentToken = new Token(category, lineCounter, column - lexeme.length() + 2, lexeme);
 		previousToken = currentToken;
 		return currentToken;
 	}
 	
+	public void printCodeLine(String content) {
+		String format = "%4d  %s";
+		System.out.println(String.format(format, lineCounter, content));
+	}
+	
 	public boolean hasNextLine() {
+		String s = new String();
 		try {
-			codeLine = bufferedReader.readLine();
-			String format = "%4d  %s\n";
-			if (codeLine == null) {
-				System.out.printf(format, lineCounter, "EOF");
-				currentToken.setTokenCategory(TokenCategory.EOF);
-			} else {
-				System.out.printf(format, lineCounter, codeLine);
-			}
-		} catch (IOException e) {
+			 s = bufferedReader.readLine();
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return codeLine != null;
+		if (s != null) {
+			codeLine = s;
+			++lineCounter;
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean hasNextToken() {
+		if (lineCounter == 1 && column == 0) {
+			hasNextLine();
+			if (codeLine == null) {
+				printCodeLine("");
+				return false;
+			} else {
+				printCodeLine(codeLine);
+			}
+		}
+		if (codeLine.substring(column).matches("\\s*")) {
+			while (hasNextLine()) {
+				column = 0;
+				printCodeLine(codeLine);
+				if (!codeLine.matches("\\s*")) {
+					return true;
+				}
+			}
+			return false;
+		} 
+		return true;
 	}
 }
