@@ -12,50 +12,51 @@ public class LexemeTable {
 	public static List<Character> tokenEndings = new ArrayList<Character>();
 	
 	static {
-		tokenMapping.put(":", TokenCategory.colon); //ok
-		tokenMapping.put("true", TokenCategory.constBool); //ok
-		tokenMapping.put("false", TokenCategory.constBool); //ok
-		tokenMapping.put("fun",TokenCategory.funDef); //ok
-		tokenMapping.put("return",TokenCategory.funRet); //ok
-		tokenMapping.put("main",TokenCategory.main); //ok
-		tokenMapping.put("(",TokenCategory.paramBeg); //ok
-		tokenMapping.put(")",TokenCategory.paramEnd); //ok
-		tokenMapping.put(",",TokenCategory.commaSep); //not ok
-		tokenMapping.put("int",TokenCategory.typeInt); // ok
-		tokenMapping.put("float",TokenCategory.typeFloat); // ok
-		tokenMapping.put("bool",TokenCategory.typeBool); // ok
-		tokenMapping.put("char",TokenCategory.typeChar); //ok
-		tokenMapping.put("void",TokenCategory.typeVoid); //ok
-		tokenMapping.put("string",TokenCategory.typeStr); //ok
-		tokenMapping.put("{",TokenCategory.beginScope); //ok
-		tokenMapping.put("}",TokenCategory.endScope); //ok
-		tokenMapping.put("+",TokenCategory.opAdd); //ok
-		tokenMapping.put("-",TokenCategory.opSub); //opNegative instead of opSub
-		tokenMapping.put("*",TokenCategory.opMult); //ok
-		tokenMapping.put("/",TokenCategory.opDiv); //ok
-		tokenMapping.put("^",TokenCategory.opPow); //ok
-		tokenMapping.put("%",TokenCategory.opMod); //ok
-		tokenMapping.put(">",TokenCategory.opGreater); //ok
-		tokenMapping.put("<",TokenCategory.opLesser); //ok
-		tokenMapping.put(">=",TokenCategory.opGreq); //opGreater and opAttrib instead of opGreq
-		tokenMapping.put("<=",TokenCategory.opLeq); //same
-		tokenMapping.put("==",TokenCategory.opEquals); //two attribs
-		tokenMapping.put("!=",TokenCategory.opNotEqual); //not and attrib
-		tokenMapping.put("&&",TokenCategory.opAnd); //nope
-		tokenMapping.put("||",TokenCategory.opOr); //nope
-		tokenMapping.put("!",TokenCategory.opNot); //ok
-		tokenMapping.put("::",TokenCategory.opConcat); //nope
-		tokenMapping.put("=",TokenCategory.opAttrib); //ok
-		tokenMapping.put(";",TokenCategory.semicolon); //ok
-		tokenMapping.put("for",TokenCategory.forLoop); //ok
-		tokenMapping.put("while",TokenCategory.whileLoop); //ok
-		tokenMapping.put("if",TokenCategory.condIf); //ok
-		tokenMapping.put("ceif",TokenCategory.condElseIf); //ta ceif poarr
-		tokenMapping.put("else",TokenCategory.condElse); //ok
-		tokenMapping.put("read",TokenCategory.scan); //ok
-		tokenMapping.put("print",TokenCategory.print); //ok
-		tokenMapping.put("[",TokenCategory.arrBegin); //ok
-		tokenMapping.put("]",TokenCategory.arrEnd); //ok
+		tokenMapping.put(":", TokenCategory.colon);
+		tokenMapping.put("true", TokenCategory.constBool);
+		tokenMapping.put("false", TokenCategory.constBool); 
+		tokenMapping.put("fun",TokenCategory.funDef); 
+		tokenMapping.put("return",TokenCategory.funRet); 
+		tokenMapping.put("main",TokenCategory.main); 
+		tokenMapping.put("(",TokenCategory.paramBeg); 
+		tokenMapping.put(")",TokenCategory.paramEnd); 
+		tokenMapping.put(",",TokenCategory.commaSep);
+		tokenMapping.put("int",TokenCategory.typeInt); 
+		tokenMapping.put("float",TokenCategory.typeFloat); 
+		tokenMapping.put("bool",TokenCategory.typeBool); 
+		tokenMapping.put("char",TokenCategory.typeChar); 
+		tokenMapping.put("void",TokenCategory.typeVoid); 
+		tokenMapping.put("string",TokenCategory.typeStr); 
+		tokenMapping.put("{",TokenCategory.beginScope); 
+		tokenMapping.put("}",TokenCategory.endScope); 
+		tokenMapping.put("+",TokenCategory.opAdd); 
+		tokenMapping.put("-",TokenCategory.opSub);
+		tokenMapping.put("*",TokenCategory.opMult); 
+		tokenMapping.put("/",TokenCategory.opDiv); 
+		tokenMapping.put("^",TokenCategory.opPow); 
+		tokenMapping.put("%",TokenCategory.opMod);
+		tokenMapping.put(">",TokenCategory.opGreater);
+		tokenMapping.put("<",TokenCategory.opLesser);
+		tokenMapping.put(">=",TokenCategory.opGreq);
+		tokenMapping.put("<=",TokenCategory.opLeq);
+		tokenMapping.put("==",TokenCategory.opEquals);
+		tokenMapping.put("!=",TokenCategory.opNotEqual);
+		tokenMapping.put("&&",TokenCategory.opAnd);
+		tokenMapping.put("||",TokenCategory.opOr);
+		tokenMapping.put("!",TokenCategory.opNot); 
+		tokenMapping.put("::",TokenCategory.opConcat);
+		tokenMapping.put("=",TokenCategory.opAttrib); 
+		tokenMapping.put(";",TokenCategory.semicolon); 
+		tokenMapping.put("for",TokenCategory.forLoop); 
+		tokenMapping.put("while",TokenCategory.whileLoop); 
+		tokenMapping.put("if",TokenCategory.condIf); 
+		tokenMapping.put("ceif",TokenCategory.condElseIf);
+		tokenMapping.put("else",TokenCategory.condElse); 
+		tokenMapping.put("read",TokenCategory.scan); 
+		tokenMapping.put("print",TokenCategory.print); 
+		tokenMapping.put("[",TokenCategory.arrBegin); 
+		tokenMapping.put("]",TokenCategory.arrEnd); 
+		tokenMapping.put("proc", TokenCategory.procDef);
 		tokenEndings.add(';');
 		tokenEndings.add(' ');
 		tokenEndings.add('(');

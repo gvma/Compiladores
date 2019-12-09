@@ -150,7 +150,7 @@ public class Lexical {
 					if ((category = LexemeTable.tokenMapping.get(lexeme)) == null) {
 						category = TokenCategory.unknown;
 					}
-					if (category == TokenCategory.unknown && lexeme.matches("[_a-zA-Z]?[0-9_a-zA-Z]*")) {
+					if (category == TokenCategory.unknown && lexeme.matches("[_a-zA-Z][0-9_a-zA-Z]*")) {
 						category = TokenCategory.id;
 					}
 				}
