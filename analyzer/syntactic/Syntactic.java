@@ -1,11 +1,8 @@
 package syntactic;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import lexical.Lexical;
-import tokens.Token;
-import tokens.TokenCategory;
 
 public class Syntactic {
 	private Lexical lexicalAnalyzer;

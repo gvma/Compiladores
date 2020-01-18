@@ -174,7 +174,7 @@ public class Lexical {
 	
 	public void printCodeLine(String content) {
 		String format = "%4d  %s";
-		System.out.println(String.format(format, lineCounter, content));
+		System.out.println(String.format(format, lineCounter - 1, content));
 	}
 	
 	public boolean hasNextLine() {
