@@ -1,0 +1,15 @@
+  1  fun int main() {
+          [0002, 0002] (0001,               funDef) {fun}
+          [0002, 0006] (0008,              typeInt) {int}
+          [0002, 0010] (0003,                 main) {main}
+          [0002, 0014] (0005,             paramBeg) {(}
+          [0002, 0015] (0006,             paramEnd) {)}
+   2     print("Hello World"); 
+          [0003, 0001] (0014,           beginScope) {{}
+          [0003, 0005] (0050,                print) {print}
+          [0003, 0010] (0005,             paramBeg) {(}
+          [0003, 0011] (0021,             constStr) {"Hello World"}
+          [0003, 0024] (0006,             paramEnd) {)}
+          [0003, 0025] (0043,            semicolon) {;}
+   3  }
+          [0004, 0002] (0015,             endScope) {}}
