@@ -60,6 +60,7 @@ public class Lexical {
 			if (next == lexeme.charAt(0)) {
 				lexeme += nextCharacter();
 				category = LexemeTable.tokenMapping.get(lexeme);
+				++column;
 			} else {
 				if (LexemeTable.tokenMapping.get(lexeme) != null) {
 					category = LexemeTable.tokenMapping.get(lexeme);
