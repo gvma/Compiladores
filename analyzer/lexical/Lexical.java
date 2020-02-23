@@ -110,7 +110,7 @@ public class Lexical {
 				if (category != TokenCategory.constFloat) {  // Se for por exemplo 123.
 					category = TokenCategory.unknown;
 				}
-			} else if (column < codeLine.length() && Character.toString(codeLine.charAt(column)).matches("\\d")) { // Caso não seja float ele tem que ir pra o prox char
+			} else if (column < codeLine.length() && Character.toString(codeLine.charAt(column)).matches("\\d")) { // Caso nÃ£o seja float ele tem que ir pra o prox char
 				++column;
 			}
 			while (column < codeLine.length() && !LexemeTable.tokenEndings.contains(codeLine.charAt(column))) { // Adicionar o 
