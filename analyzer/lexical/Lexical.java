@@ -131,6 +131,28 @@ public class Lexical {
 					category = TokenCategory.semicolon;
 				} else if (lexeme.equals("-")) {
 					category = TokenCategory.opSub;
+				} else if (lexeme.equals("+")) {
+					category = TokenCategory.opAdd;
+				} else if (lexeme.equals("/")) {
+					category = TokenCategory.opDiv;
+				} else if (lexeme.equals("*")) {
+					category = TokenCategory.opMult;
+				} else if (lexeme.equals("^")) {
+					category = TokenCategory.opPow;
+				} else if (lexeme.equals(",")) {
+					category = TokenCategory.commaSep;
+				} else if (lexeme.equals("{")) {
+					category = TokenCategory.beginScope;
+				} else if (lexeme.equals("}")) {
+					category = TokenCategory.endScope;
+				} else if (lexeme.equals("(")) {
+					category = TokenCategory.paramBeg;
+				} else if (lexeme.equals(")")) {
+					category = TokenCategory.paramEnd;
+				} else if (lexeme.equals("=")) {
+					category = TokenCategory.opAttrib;
+				} else if (lexeme.equals("!")) {
+					category = TokenCategory.opNot;
 				} else {
 					while (column < codeLine.length()) {
 						boolean nextChar = false;
