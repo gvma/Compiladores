@@ -1,0 +1,18 @@
+ 1  fun int main() {
+          S = FunDecl S
+          FunDecl = 'funDef' Type FunName Param Body
+          Type = 'int'
+          FunName = 'main'
+          Param = '(' LParam ')'
+          LParam = epsilon
+   2     print("Hello World"); 
+          Body = '{' BodyPart '}'
+          BodyPart = Command BodyPart
+          Command = 'print' '(' Ec LParamCall ')' ';'
+          Ec = Fc Ecr
+          Fc = 'constStr'
+          Ecr = epsilon
+          PrintParam = epsilon
+   3  }
+          BodyPart = epsilon
+          S = epsilon

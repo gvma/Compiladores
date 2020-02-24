@@ -1,4 +1,5 @@
 proc fib(int n) {
+	const int a = 0;
 	int n1 = 0, n2 = 1, n3;
 	if (n == 0) {
 		print("%d\n", n);
@@ -14,7 +15,7 @@ proc fib(int n) {
 				print("\n");
 				return;
 			}
-			separator = ", "			
+			separator = ", ";
 			n1 = n2;
 			n2 = n3;
 		}
