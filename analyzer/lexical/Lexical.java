@@ -12,7 +12,7 @@ public class Lexical {
 	public int lineCounter = 1, column = 0, lastColumn = 0;
 	private BufferedReader bufferedReader;
 	public String codeLine = "";
-	
+
 	/**
 	 * @param filePath the file path
 	 * @throws IOException if filePath is invalid
@@ -60,6 +60,7 @@ public class Lexical {
 			if (next == lexeme.charAt(0)) {
 				lexeme += nextCharacter();
 				category = LexemeTable.tokenMapping.get(lexeme);
+				++column;
 			} else {
 				if (LexemeTable.tokenMapping.get(lexeme) != null) {
 					category = LexemeTable.tokenMapping.get(lexeme);
@@ -128,6 +129,8 @@ public class Lexical {
 			if (lexeme.matches("\\p{ASCII}")) {
 				if (lexeme.equals(";")) {
 					category = TokenCategory.semicolon;
+				} else if (lexeme.equals("-")) {
+					category = TokenCategory.opSub;
 				} else {
 					while (column < codeLine.length()) {
 						boolean nextChar = false;

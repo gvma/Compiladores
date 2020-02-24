@@ -12,6 +12,7 @@ public class LexemeTable {
 	public static List<Character> tokenEndings = new ArrayList<Character>();
 	
 	static {
+		tokenMapping.put("const", TokenCategory.constVar);
 		tokenMapping.put(":", TokenCategory.colon);
 		tokenMapping.put("true", TokenCategory.constBool);
 		tokenMapping.put("false", TokenCategory.constBool); 
@@ -85,7 +86,6 @@ public class LexemeTable {
 		tokenEndings.add(',');
 		tokenEndings.add('[');
 		tokenEndings.add(']');
-		tokenEndings.add(':');
 	}
 	
 }
