@@ -9,6 +9,7 @@ import tokens.TokenCategory;
 public class Syntactic {
 	private Lexical lexicalAnalyzer;
 	private Token currentToken;
+	private int scopeCounter = 0;
 	
 	public Syntactic(String[] args) {
 		for (String s : args) {
@@ -24,11 +25,9 @@ public class Syntactic {
 
 	public void setNextToken(boolean isRequired) {
 		if (lexicalAnalyzer.hasNextToken()) {
-			//System.out.println("current token: " + currentToken);
 			currentToken = lexicalAnalyzer.nextToken();
-			//System.out.println("next token: " + currentToken);
 		} else if (isRequired) {
-			System.err.println("Unexpected EOF");
+			sendError("Unexpected EOF");
 		}
 	}
 
@@ -125,11 +124,12 @@ public class Syntactic {
 	}
 
 	public void fReturn() {
-		if (checkCategory(true, TokenCategory.funRet)) {
-			printProduction("Return", "'funRet' Ec");
+		if (checkCategory(false, TokenCategory.constStr, TokenCategory.constChar, TokenCategory.constInt, TokenCategory.constFloat, TokenCategory.constBool,
+				TokenCategory.opNot, TokenCategory.opSub, TokenCategory.paramBeg, TokenCategory.id)) {
+			printProduction("Return", "Ec");
 			fEc();
 		} else {
-			unexpectedToken("return");
+			printProduction("Return", "ε");
 		}
 	}
 
@@ -204,9 +204,19 @@ public class Syntactic {
 
 	public void fBody() {
 		if (checkCategory(true, TokenCategory.beginScope)) {
+			scopeCounter++;
 			printProduction("Body", "'{' BodyPart '}'");
 			fBodyPart();
-			checkCategory(true, TokenCategory.endScope);
+			if (currentToken.getTokenCategory() == TokenCategory.endScope) {
+				scopeCounter--;
+				if (lexicalAnalyzer.hasNextToken()) {
+					currentToken = lexicalAnalyzer.nextToken();
+				} else if (scopeCounter != 0) {
+					sendError("Unexpected EOF");
+				}
+			} else {
+				unexpectedToken("'}'");
+			}
 		} else {
 			unexpectedToken("'{'");
 		}
@@ -225,8 +235,8 @@ public class Syntactic {
 			printProduction("BodyPart", "Command BodyPart");
 			fCommand();
 			fBodyPart();
-		} else if (checkCategory(false, TokenCategory.funRet)) {
-			printProduction("BodyPart", "Return ';'");
+		} else if (checkCategory(true, TokenCategory.funRet)) {
+			printProduction("BodyPart", "'funRet' Return ';'");
 			fReturn();
 			checkCategory(true, TokenCategory.semicolon);
 		} else {
@@ -272,9 +282,11 @@ public class Syntactic {
 
 	public void fLIdr() {
 		if (checkCategory(true, TokenCategory.commaSep)) {
-			printProduction("LIdr", "',' IdAttr LIdr");
-			fIdAttr();
-			fLIdr();
+			printProduction("LIdr", "',' 'id' IdAttr LIdr");
+			if (checkCategory(true, TokenCategory.id)) {
+				fIdAttr();
+				fLIdr();
+			}
 		} else {
 			printProduction("LIdr", "ε");
 		}
@@ -627,7 +639,7 @@ public class Syntactic {
 		} else if (checkCategory(true, TokenCategory.opSub)) {
 			printProduction("Fa", "'opSub' Fc");
 			fFc();
-		} else if (checkCategory(true, TokenCategory.id)) {
+		} else if (checkCategory(false, TokenCategory.id)) {
 			printProduction("Fa", "Id");
 			fId();
 		} else if (checkCategory(true, TokenCategory.constInt)) {
