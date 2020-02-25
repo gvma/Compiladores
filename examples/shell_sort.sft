@@ -1,6 +1,6 @@
 int n = 1000;
 
-proc shellSort(int arr(n)) {
+proc shellSort(int arr[n]) {
 	int gap = n / 2;
 	while (gap > 0) {
 		for (int i :(gap, n, 1)) {
@@ -17,7 +17,7 @@ proc shellSort(int arr(n)) {
 }
 
 fun int main() {
-	int arr(n);
+	int arr[n];
 	read(arr);
 	for (int i : (0, n, 1)) {
 		print("%d ", arr[i]);
