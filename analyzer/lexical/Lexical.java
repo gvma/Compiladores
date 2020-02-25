@@ -12,7 +12,7 @@ public class Lexical {
 	public int lineCounter = 1, column = 0, lastColumn = 0;
 	private BufferedReader bufferedReader;
 	public String codeLine = "";
-	
+
 	/**
 	 * @param filePath the file path
 	 * @throws IOException if filePath is invalid
@@ -20,14 +20,14 @@ public class Lexical {
 	public Lexical(String filePath) throws IOException {
 		this.bufferedReader = new BufferedReader(new FileReader(new File(filePath)));
 	}
-	
+
 	private String nextCharacter() {
-		if (column < codeLine.length()) {			
+		if (column < codeLine.length()) {
 			return Character.toString(codeLine.charAt(column));
 		}
 		return "";
 	}
-	
+
 	/**
 	 * @return Token the next token if there is one or null otherwise
 	 */
@@ -113,7 +113,7 @@ public class Lexical {
 			} else if (column < codeLine.length() && Character.toString(codeLine.charAt(column)).matches("\\d")) { // Caso nÃ£o seja float ele tem que ir pra o prox char
 				++column;
 			}
-			while (column < codeLine.length() && !LexemeTable.tokenEndings.contains(codeLine.charAt(column))) { // Adicionar o 
+			while (column < codeLine.length() && !LexemeTable.tokenEndings.contains(codeLine.charAt(column))) { // Adicionar o
 				lexeme += nextCharacter();
 				++column;
 				category = TokenCategory.unknown;
@@ -129,6 +129,30 @@ public class Lexical {
 			if (lexeme.matches("\\p{ASCII}")) {
 				if (lexeme.equals(";")) {
 					category = TokenCategory.semicolon;
+				} else if (lexeme.equals("-")) {
+					category = TokenCategory.opSub;
+				} else if (lexeme.equals("+")) {
+					category = TokenCategory.opAdd;
+				} else if (lexeme.equals("/")) {
+					category = TokenCategory.opDiv;
+				} else if (lexeme.equals("*")) {
+					category = TokenCategory.opMult;
+				} else if (lexeme.equals("^")) {
+					category = TokenCategory.opPow;
+				} else if (lexeme.equals(",")) {
+					category = TokenCategory.commaSep;
+				} else if (lexeme.equals("{")) {
+					category = TokenCategory.beginScope;
+				} else if (lexeme.equals("}")) {
+					category = TokenCategory.endScope;
+				} else if (lexeme.equals("(")) {
+					category = TokenCategory.paramBeg;
+				} else if (lexeme.equals(")")) {
+					category = TokenCategory.paramEnd;
+				} else if (lexeme.equals("=")) {
+					category = TokenCategory.opAttrib;
+				} else if (lexeme.equals("!")) {
+					category = TokenCategory.opNot;
 				} else {
 					while (column < codeLine.length()) {
 						boolean nextChar = false;
@@ -144,7 +168,7 @@ public class Lexical {
 							--column;
 							break;
 						}
-						if (!nextChar) {						
+						if (!nextChar) {
 							lexeme += nextCharacter();
 						}
 					}
@@ -161,7 +185,7 @@ public class Lexical {
 			category = TokenCategory.EOF;
 		}
 		if (column == codeLine.length()) {
-			if (hasNextLine()) {				
+			if (hasNextLine()) {
 				column = 0;
 				printCodeLine(codeLine);
 			}
@@ -172,16 +196,16 @@ public class Lexical {
 		previousToken = currentToken;
 		return currentToken;
 	}
-	
+
 	public void printCodeLine(String content) {
 		String format = "%4d  %s";
 		System.out.println(String.format(format, lineCounter - 1, content));
 	}
-	
+
 	public boolean hasNextLine() {
 		String s = new String();
 		try {
-			 s = bufferedReader.readLine();
+			s = bufferedReader.readLine();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -192,7 +216,7 @@ public class Lexical {
 		}
 		return false;
 	}
-	
+
 	public boolean hasNextToken() {
 		if (lineCounter == 1 && column == 0) {
 			hasNextLine();
@@ -212,7 +236,7 @@ public class Lexical {
 				}
 			}
 			return false;
-		} 
+		}
 		return true;
 	}
 }
