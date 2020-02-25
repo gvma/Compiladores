@@ -55,8 +55,7 @@ public class Lexical {
 			category = LexemeTable.tokenMapping.get(lexeme);
 		} else if (lexeme.equals(":") || lexeme.equals("&") || lexeme.equals("|")) {
 			endOfFile = false;
-			++column;
-			char next = codeLine.charAt(column);
+			char next = codeLine.charAt(column + 1);
 			if (next == lexeme.charAt(0)) {
 				lexeme += nextCharacter();
 				category = LexemeTable.tokenMapping.get(lexeme);
@@ -192,7 +191,7 @@ public class Lexical {
 		} else {
 			++column;
 		}
-		currentToken = new Token(category, lineCounter, column - lexeme.length() + 2, lexeme);
+		currentToken = new Token(category, lineCounter - 1, column - lexeme.length() + 1, lexeme);
 		previousToken = currentToken;
 		return currentToken;
 	}
