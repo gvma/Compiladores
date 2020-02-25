@@ -14,7 +14,7 @@ proc fib(int n) {
 				print("\n");
 				return;
 			}
-			separator = ", "			
+			separator = ", ";
 			n1 = n2;
 			n2 = n3;
 		}
