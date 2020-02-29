@@ -35,7 +35,6 @@ public class LexemeTable {
 		tokenMapping.put("*",TokenCategory.opMult);
 		tokenMapping.put("/",TokenCategory.opDiv);
 		tokenMapping.put("^",TokenCategory.opPow);
-		tokenMapping.put("%",TokenCategory.opMod);
 		tokenMapping.put(">",TokenCategory.opGreater);
 		tokenMapping.put("<",TokenCategory.opLesser);
 		tokenMapping.put(">=",TokenCategory.opGreq);
@@ -73,7 +72,6 @@ public class LexemeTable {
 		tokenEndings.add('/');
 		tokenEndings.add('*');
 		tokenEndings.add('^');
-		tokenEndings.add('%');
 		tokenEndings.add(':');
 		tokenEndings.add('=');
 		tokenEndings.add('<');

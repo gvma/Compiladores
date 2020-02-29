@@ -1,3 +1,4 @@
-fun int main() {
-   print("Hello World"); 
+fun int main(){
+	print("Hello World!");
+	return 0;
 }
