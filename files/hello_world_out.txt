@@ -1,0 +1,48 @@
+   1  fun int main(){
+          S = FunDecl S
+              [0001, 0001] (0001,               funDef) {fun}
+          FunDecl = 'fun' Type FunName '(' LParamDecl ')' Body
+              [0001, 0005] (0008,              typeInt) {int}
+          Type = 'int'
+              [0001, 0009] (0003,                 main) {main}
+          FunName = 'main'
+              [0001, 0013] (0005,             paramBeg) {(}
+          LParamDecl = ε
+              [0001, 0014] (0006,             paramEnd) {)}
+              [0001, 0015] (0014,           beginScope) {{}
+   2  	print("Hello World!");
+          Body = '{' BodyPart '}'
+          BodyPart = Command BodyPart
+              [0002, 0002] (0051,                print) {print}
+          Command = 'print' '(' 'constStr' PrintLParam ')' ';'
+              [0002, 0007] (0005,             paramBeg) {(}
+              [0002, 0008] (0022,             constStr) {"Hello World!"}
+          PrintLParam = ε
+              [0002, 0022] (0006,             paramEnd) {)}
+              [0002, 0023] (0044,            semicolon) {;}
+   3  	return 0;
+              [0003, 0002] (0002,               funRet) {return}
+          BodyPart = 'return' Return ';'
+          Return = Ec
+          Ec = Fc Ecr
+          Eb = Tb Ebr
+          Tb = Fb Tbr
+          Fb = Ra Fbr
+          Ra = Ea Rar
+          Ea = Ta Ear
+          Ta = Pa Tar
+          Pa = Fa Par
+              [0003, 0009] (0016,             constInt) {0}
+          Fa = 'constInt'
+          Par = ε
+          Tar = ε
+          Ear = ε
+          Rar = ε
+          Fbr = ε
+          Tbr = ε
+          Ebr = ε
+          Ecr = ε
+              [0003, 0010] (0044,            semicolon) {;}
+   4  }
+              [0004, 0001] (0015,             endScope) {}}
+          S = ε

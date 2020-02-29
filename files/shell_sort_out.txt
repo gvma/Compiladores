@@ -1,0 +1,874 @@
+1  int n = 1000;
+          S = DeclId S
+          DeclId = Type LId ';'
+              [0001, 0001] (0008,              typeInt) {int}
+          Type = 'int'
+          LId = Id AttrOpt LIdr
+              [0001, 0005] (0004,                   id) {n}
+          Id = 'id' ArrayOpt
+          ArrayOpt = ε
+              [0001, 0007] (0041,             opAttrib) {=}
+          AttrOpt = '=' Ec
+          Ec = Fc Ecr
+          Eb = Tb Ebr
+          Tb = Fb Tbr
+          Fb = Ra Fbr
+          Ra = Ea Rar
+          Ea = Ta Ear
+          Ta = Pa Tar
+          Pa = Fa Par
+              [0001, 0009] (0016,             constInt) {1000}
+          Fa = 'constInt'
+          Par = ε
+          Tar = ε
+          Ear = ε
+          Rar = ε
+          Fbr = ε
+          Tbr = ε
+          Ebr = ε
+          Ecr = ε
+          LIdr = ε
+              [0001, 0013] (0044,            semicolon) {;}
+   2  
+   3  proc shellSort(int arr[n]) {
+          S = ProcDef S
+              [0003, 0001] (0043,              procDef) {proc}
+          ProcDecl = 'proc' FunName '(' LParamDecl ')' Body
+              [0003, 0006] (0004,                   id) {shellSort}
+          FunName = 'id'
+              [0003, 0015] (0005,             paramBeg) {(}
+          LParamDecl = Type 'id' ArrayOpt LParamDeclr
+              [0003, 0016] (0008,              typeInt) {int}
+          Type = 'int'
+              [0003, 0020] (0004,                   id) {arr}
+              [0003, 0023] (0027,             arrBegin) {[}
+          ArrayOpt = '[' Ea ']'
+          Ea = Ta Ear
+          Ta = Pa Tar
+          Pa = Fa Par
+              [0003, 0024] (0004,                   id) {n}
+          IdOrFunCall = 'id' IdOrFunCallr
+          IdOrFunCallr = ε
+          Par = ε
+          Tar = ε
+          Ear = ε
+              [0003, 0025] (0028,               arrEnd) {]}
+              [0003, 0026] (0006,             paramEnd) {)}
+              [0003, 0028] (0014,           beginScope) {{}
+   4  	int gap = n / 2;
+          Body = '{' BodyPart '}'
+          BodyPart = DeclId BodyPart
+          DeclId = Type LId ';'
+              [0004, 0002] (0008,              typeInt) {int}
+          Type = 'int'
+          LId = Id AttrOpt LIdr
+              [0004, 0006] (0004,                   id) {gap}
+          Id = 'id' ArrayOpt
+          ArrayOpt = ε
+              [0004, 0010] (0041,             opAttrib) {=}
+          AttrOpt = '=' Ec
+          Ec = Fc Ecr
+          Eb = Tb Ebr
+          Tb = Fb Tbr
+          Fb = Ra Fbr
+          Ra = Ea Rar
+          Ea = Ta Ear
+          Ta = Pa Tar
+          Pa = Fa Par
+              [0004, 0012] (0004,                   id) {n}
+          IdOrFunCall = 'id' IdOrFunCallr
+          IdOrFunCallr = ε
+          Par = ε
+              [0004, 0014] (0026,                opDiv) {/}
+          Tar = 'opDiv' Pa Tar
+          Pa = Fa Par
+              [0004, 0016] (0016,             constInt) {2}
+          Fa = 'constInt'
+          Par = ε
+          Tar = ε
+          Ear = ε
+          Rar = ε
+          Fbr = ε
+          Tbr = ε
+          Ebr = ε
+          Ecr = ε
+          LIdr = ε
+              [0004, 0017] (0044,            semicolon) {;}
+   5  	while (gap > 0) {
+          BodyPart = Command BodyPart
+              [0005, 0002] (0046,            whileLoop) {while}
+          Command = 'whileLoop' '(' Eb ')' Body
+              [0005, 0008] (0005,             paramBeg) {(}
+          Eb = Tb Ebr
+          Tb = Fb Tbr
+          Fb = Ra Fbr
+          Ra = Ea Rar
+          Ea = Ta Ear
+          Ta = Pa Tar
+          Pa = Fa Par
+              [0005, 0009] (0004,                   id) {gap}
+          IdOrFunCall = 'id' IdOrFunCallr
+          IdOrFunCallr = ε
+          Par = ε
+          Tar = ε
+          Ear = ε
+          Rar = ε
+              [0005, 0013] (0031,            opGreater) {>}
+          Fbr = 'opGreater' Ra Fbr
+          Ra = Ea Rar
+          Ea = Ta Ear
+          Ta = Pa Tar
+          Pa = Fa Par
+              [0005, 0015] (0016,             constInt) {0}
+          Fa = 'constInt'
+          Par = ε
+          Tar = ε
+          Ear = ε
+          Rar = ε
+          Fbr = ε
+          Tbr = ε
+          Ebr = ε
+              [0005, 0016] (0006,             paramEnd) {)}
+              [0005, 0018] (0014,           beginScope) {{}
+   6  		for (int i :(gap, n, 1)) {
+          Body = '{' BodyPart '}'
+          BodyPart = Command BodyPart
+              [0006, 0003] (0045,              forLoop) {for}
+          Command = 'forLoop' ForParams
+              [0006, 0007] (0005,             paramBeg) {(}
+          ForParams = '(' 'typeInt' 'id' ':' '(' Ea ',' Ea ForStep ')' ')' Body
+              [0006, 0008] (0008,              typeInt) {int}
+              [0006, 0012] (0004,                   id) {i}
+              [0006, 0014] (0019,                colon) {:}
+              [0006, 0015] (0005,             paramBeg) {(}
+          Ea = Ta Ear
+          Ta = Pa Tar
+          Pa = Fa Par
+              [0006, 0016] (0004,                   id) {gap}
+          IdOrFunCall = 'id' IdOrFunCallr
+          IdOrFunCallr = ε
+          Par = ε
+          Tar = ε
+          Ear = ε
+              [0006, 0019] (0007,             commaSep) {,}
+          Ea = Ta Ear
+          Ta = Pa Tar
+          Pa = Fa Par
+              [0006, 0021] (0004,                   id) {n}
+          IdOrFunCall = 'id' IdOrFunCallr
+          IdOrFunCallr = ε
+          Par = ε
+          Tar = ε
+          Ear = ε
+              [0006, 0022] (0007,             commaSep) {,}
+          ForStep = ',' Ea
+          Ea = Ta Ear
+          Ta = Pa Tar
+          Pa = Fa Par
+              [0006, 0024] (0016,             constInt) {1}
+          Fa = 'constInt'
+          Par = ε
+          Tar = ε
+          Ear = ε
+              [0006, 0025] (0006,             paramEnd) {)}
+              [0006, 0026] (0006,             paramEnd) {)}
+              [0006, 0028] (0014,           beginScope) {{}
+   7  			int temp = arr[i];
+          Body = '{' BodyPart '}'
+          BodyPart = DeclId BodyPart
+          DeclId = Type LId ';'
+              [0007, 0004] (0008,              typeInt) {int}
+          Type = 'int'
+          LId = Id AttrOpt LIdr
+              [0007, 0008] (0004,                   id) {temp}
+          Id = 'id' ArrayOpt
+          ArrayOpt = ε
+              [0007, 0013] (0041,             opAttrib) {=}
+          AttrOpt = '=' Ec
+          Ec = Fc Ecr
+          Eb = Tb Ebr
+          Tb = Fb Tbr
+          Fb = Ra Fbr
+          Ra = Ea Rar
+          Ea = Ta Ear
+          Ta = Pa Tar
+          Pa = Fa Par
+              [0007, 0015] (0004,                   id) {arr}
+          IdOrFunCall = 'id' IdOrFunCallr
+              [0007, 0018] (0027,             arrBegin) {[}
+          IdOrFunCallr = '[' Ea ']'
+          Ea = Ta Ear
+          Ta = Pa Tar
+          Pa = Fa Par
+              [0007, 0019] (0004,                   id) {i}
+          IdOrFunCall = 'id' IdOrFunCallr
+          IdOrFunCallr = ε
+          Par = ε
+          Tar = ε
+          Ear = ε
+              [0007, 0020] (0028,               arrEnd) {]}
+          Par = ε
+          Tar = ε
+          Ear = ε
+          Rar = ε
+          Fbr = ε
+          Tbr = ε
+          Ebr = ε
+          Ecr = ε
+          LIdr = ε
+              [0007, 0021] (0044,            semicolon) {;}
+   8  			int j = i;
+          BodyPart = DeclId BodyPart
+          DeclId = Type LId ';'
+              [0008, 0004] (0008,              typeInt) {int}
+          Type = 'int'
+          LId = Id AttrOpt LIdr
+              [0008, 0008] (0004,                   id) {j}
+          Id = 'id' ArrayOpt
+          ArrayOpt = ε
+              [0008, 0010] (0041,             opAttrib) {=}
+          AttrOpt = '=' Ec
+          Ec = Fc Ecr
+          Eb = Tb Ebr
+          Tb = Fb Tbr
+          Fb = Ra Fbr
+          Ra = Ea Rar
+          Ea = Ta Ear
+          Ta = Pa Tar
+          Pa = Fa Par
+              [0008, 0012] (0004,                   id) {i}
+          IdOrFunCall = 'id' IdOrFunCallr
+          IdOrFunCallr = ε
+          Par = ε
+          Tar = ε
+          Ear = ε
+          Rar = ε
+          Fbr = ε
+          Tbr = ε
+          Ebr = ε
+          Ecr = ε
+          LIdr = ε
+              [0008, 0013] (0044,            semicolon) {;}
+   9  			while (j >= gap && (arr[j - gap] > temp)) {
+          BodyPart = Command BodyPart
+              [0009, 0004] (0046,            whileLoop) {while}
+          Command = 'whileLoop' '(' Eb ')' Body
+              [0009, 0010] (0005,             paramBeg) {(}
+          Eb = Tb Ebr
+          Tb = Fb Tbr
+          Fb = Ra Fbr
+          Ra = Ea Rar
+          Ea = Ta Ear
+          Ta = Pa Tar
+          Pa = Fa Par
+              [0009, 0011] (0004,                   id) {j}
+          IdOrFunCall = 'id' IdOrFunCallr
+          IdOrFunCallr = ε
+          Par = ε
+          Tar = ε
+          Ear = ε
+          Rar = ε
+              [0009, 0013] (0033,               opGreq) {>=}
+          Fbr = 'opGreq' Ra Fbr
+          Ra = Ea Rar
+          Ea = Ta Ear
+          Ta = Pa Tar
+          Pa = Fa Par
+              [0009, 0016] (0004,                   id) {gap}
+          IdOrFunCall = 'id' IdOrFunCallr
+          IdOrFunCallr = ε
+          Par = ε
+          Tar = ε
+          Ear = ε
+          Rar = ε
+          Fbr = ε
+              [0009, 0020] (0037,                opAnd) {&&}
+          Tbr = 'opAnd' Fb Tbr
+          Fb = Ra Fbr
+          Ra = Ea Rar
+          Ea = Ta Ear
+          Ta = Pa Tar
+          Pa = Fa Par
+              [0009, 0023] (0005,             paramBeg) {(}
+          Fa = '(' Ec ')'
+          Ec = Fc Ecr
+          Eb = Tb Ebr
+          Tb = Fb Tbr
+          Fb = Ra Fbr
+          Ra = Ea Rar
+          Ea = Ta Ear
+          Ta = Pa Tar
+          Pa = Fa Par
+              [0009, 0024] (0004,                   id) {arr}
+          IdOrFunCall = 'id' IdOrFunCallr
+              [0009, 0027] (0027,             arrBegin) {[}
+          IdOrFunCallr = '[' Ea ']'
+          Ea = Ta Ear
+          Ta = Pa Tar
+          Pa = Fa Par
+              [0009, 0028] (0004,                   id) {j}
+          IdOrFunCall = 'id' IdOrFunCallr
+          IdOrFunCallr = ε
+          Par = ε
+          Tar = ε
+              [0009, 0030] (0024,                opSub) {-}
+          Ear = 'opSub' Ta Ear
+          Ta = Pa Tar
+          Pa = Fa Par
+              [0009, 0032] (0004,                   id) {gap}
+          IdOrFunCall = 'id' IdOrFunCallr
+          IdOrFunCallr = ε
+          Par = ε
+          Tar = ε
+          Ear = ε
+              [0009, 0035] (0028,               arrEnd) {]}
+          Par = ε
+          Tar = ε
+          Ear = ε
+          Rar = ε
+              [0009, 0037] (0031,            opGreater) {>}
+          Fbr = 'opGreater' Ra Fbr
+          Ra = Ea Rar
+          Ea = Ta Ear
+          Ta = Pa Tar
+          Pa = Fa Par
+              [0009, 0039] (0004,                   id) {temp}
+          IdOrFunCall = 'id' IdOrFunCallr
+          IdOrFunCallr = ε
+          Par = ε
+          Tar = ε
+          Ear = ε
+          Rar = ε
+          Fbr = ε
+          Tbr = ε
+          Ebr = ε
+          Ecr = ε
+              [0009, 0043] (0006,             paramEnd) {)}
+          Par = ε
+          Tar = ε
+          Ear = ε
+          Rar = ε
+          Fbr = ε
+          Tbr = ε
+          Ebr = ε
+              [0009, 0044] (0006,             paramEnd) {)}
+              [0009, 0046] (0014,           beginScope) {{}
+  10  				arr[j] = arr[j - gap];
+          Body = '{' BodyPart '}'
+          BodyPart = BodyPartr ';' BodyPart
+              [0010, 0005] (0004,                   id) {arr}
+          BodyPartr = 'id' ParamAttr
+              [0010, 0008] (0027,             arrBegin) {[}
+          ParamAttrib = '[' Ea ']' '=' Ec LAttr
+          Ea = Ta Ear
+          Ta = Pa Tar
+          Pa = Fa Par
+              [0010, 0009] (0004,                   id) {j}
+          IdOrFunCall = 'id' IdOrFunCallr
+          IdOrFunCallr = ε
+          Par = ε
+          Tar = ε
+          Ear = ε
+              [0010, 0010] (0028,               arrEnd) {]}
+              [0010, 0012] (0041,             opAttrib) {=}
+          Ec = Fc Ecr
+          Eb = Tb Ebr
+          Tb = Fb Tbr
+          Fb = Ra Fbr
+          Ra = Ea Rar
+          Ea = Ta Ear
+          Ta = Pa Tar
+          Pa = Fa Par
+              [0010, 0014] (0004,                   id) {arr}
+          IdOrFunCall = 'id' IdOrFunCallr
+              [0010, 0017] (0027,             arrBegin) {[}
+          IdOrFunCallr = '[' Ea ']'
+          Ea = Ta Ear
+          Ta = Pa Tar
+          Pa = Fa Par
+              [0010, 0018] (0004,                   id) {j}
+          IdOrFunCall = 'id' IdOrFunCallr
+          IdOrFunCallr = ε
+          Par = ε
+          Tar = ε
+              [0010, 0020] (0024,                opSub) {-}
+          Ear = 'opSub' Ta Ear
+          Ta = Pa Tar
+          Pa = Fa Par
+              [0010, 0022] (0004,                   id) {gap}
+          IdOrFunCall = 'id' IdOrFunCallr
+          IdOrFunCallr = ε
+          Par = ε
+          Tar = ε
+          Ear = ε
+              [0010, 0025] (0028,               arrEnd) {]}
+          Par = ε
+          Tar = ε
+          Ear = ε
+          Rar = ε
+          Fbr = ε
+          Tbr = ε
+          Ebr = ε
+          Ecr = ε
+          LAttr = ε
+              [0010, 0026] (0044,            semicolon) {;}
+  11  				j = j - gap;
+          BodyPart = BodyPartr ';' BodyPart
+              [0011, 0005] (0004,                   id) {j}
+          BodyPartr = 'id' ParamAttr
+              [0011, 0007] (0041,             opAttrib) {=}
+          ParamAttrib = '=' Ec LAttr
+          Ec = Fc Ecr
+          Eb = Tb Ebr
+          Tb = Fb Tbr
+          Fb = Ra Fbr
+          Ra = Ea Rar
+          Ea = Ta Ear
+          Ta = Pa Tar
+          Pa = Fa Par
+              [0011, 0009] (0004,                   id) {j}
+          IdOrFunCall = 'id' IdOrFunCallr
+          IdOrFunCallr = ε
+          Par = ε
+          Tar = ε
+              [0011, 0011] (0024,                opSub) {-}
+          Ear = 'opSub' Ta Ear
+          Ta = Pa Tar
+          Pa = Fa Par
+              [0011, 0013] (0004,                   id) {gap}
+          IdOrFunCall = 'id' IdOrFunCallr
+          IdOrFunCallr = ε
+          Par = ε
+          Tar = ε
+          Ear = ε
+          Rar = ε
+          Fbr = ε
+          Tbr = ε
+          Ebr = ε
+          Ecr = ε
+          LAttr = ε
+              [0011, 0016] (0044,            semicolon) {;}
+  12  			}
+          BodyPart = ε
+              [0012, 0004] (0015,             endScope) {}}
+  13  			arr[j] = temp; 			
+          BodyPart = BodyPartr ';' BodyPart
+              [0013, 0004] (0004,                   id) {arr}
+          BodyPartr = 'id' ParamAttr
+              [0013, 0007] (0027,             arrBegin) {[}
+          ParamAttrib = '[' Ea ']' '=' Ec LAttr
+          Ea = Ta Ear
+          Ta = Pa Tar
+          Pa = Fa Par
+              [0013, 0008] (0004,                   id) {j}
+          IdOrFunCall = 'id' IdOrFunCallr
+          IdOrFunCallr = ε
+          Par = ε
+          Tar = ε
+          Ear = ε
+              [0013, 0009] (0028,               arrEnd) {]}
+              [0013, 0011] (0041,             opAttrib) {=}
+          Ec = Fc Ecr
+          Eb = Tb Ebr
+          Tb = Fb Tbr
+          Fb = Ra Fbr
+          Ra = Ea Rar
+          Ea = Ta Ear
+          Ta = Pa Tar
+          Pa = Fa Par
+              [0013, 0013] (0004,                   id) {temp}
+          IdOrFunCall = 'id' IdOrFunCallr
+          IdOrFunCallr = ε
+          Par = ε
+          Tar = ε
+          Ear = ε
+          Rar = ε
+          Fbr = ε
+          Tbr = ε
+          Ebr = ε
+          Ecr = ε
+          LAttr = ε
+              [0013, 0017] (0044,            semicolon) {;}
+  14  		}
+          BodyPart = ε
+              [0014, 0003] (0015,             endScope) {}}
+  15  		gap = gap / 2; 
+          BodyPart = BodyPartr ';' BodyPart
+              [0015, 0003] (0004,                   id) {gap}
+          BodyPartr = 'id' ParamAttr
+              [0015, 0007] (0041,             opAttrib) {=}
+          ParamAttrib = '=' Ec LAttr
+          Ec = Fc Ecr
+          Eb = Tb Ebr
+          Tb = Fb Tbr
+          Fb = Ra Fbr
+          Ra = Ea Rar
+          Ea = Ta Ear
+          Ta = Pa Tar
+          Pa = Fa Par
+              [0015, 0009] (0004,                   id) {gap}
+          IdOrFunCall = 'id' IdOrFunCallr
+          IdOrFunCallr = ε
+          Par = ε
+              [0015, 0013] (0026,                opDiv) {/}
+          Tar = 'opDiv' Pa Tar
+          Pa = Fa Par
+              [0015, 0015] (0016,             constInt) {2}
+          Fa = 'constInt'
+          Par = ε
+          Tar = ε
+          Ear = ε
+          Rar = ε
+          Fbr = ε
+          Tbr = ε
+          Ebr = ε
+          Ecr = ε
+          LAttr = ε
+              [0015, 0016] (0044,            semicolon) {;}
+  16  	}
+          BodyPart = ε
+              [0016, 0002] (0015,             endScope) {}}
+  17  }
+          BodyPart = ε
+              [0017, 0001] (0015,             endScope) {}}
+  18  
+  19  fun int main() {
+          S = FunDecl S
+              [0019, 0001] (0001,               funDef) {fun}
+          FunDecl = 'fun' Type FunName '(' LParamDecl ')' Body
+              [0019, 0005] (0008,              typeInt) {int}
+          Type = 'int'
+              [0019, 0009] (0003,                 main) {main}
+          FunName = 'main'
+              [0019, 0013] (0005,             paramBeg) {(}
+          LParamDecl = ε
+              [0019, 0014] (0006,             paramEnd) {)}
+              [0019, 0016] (0014,           beginScope) {{}
+  20  	if(!-a > 0) {
+          Body = '{' BodyPart '}'
+          BodyPart = Command BodyPart
+              [0020, 0002] (0047,               condIf) {if}
+          Command = 'condIf' '(' Eb ')' Body Ifr
+              [0020, 0004] (0005,             paramBeg) {(}
+          Eb = Tb Ebr
+          Tb = Fb Tbr
+              [0020, 0005] (0039,                opNot) {!}
+          Fb = 'opNot' Fb
+          Fb = Ra Fbr
+          Ra = Ea Rar
+          Ea = Ta Ear
+          Ta = Pa Tar
+          Pa = Fa Par
+              [0020, 0006] (0024,                opSub) {-}
+          Fa = 'opSub' Fa
+              [0020, 0007] (0004,                   id) {a}
+          IdOrFunCall = 'id' IdOrFunCallr
+          IdOrFunCallr = ε
+          Par = ε
+          Tar = ε
+          Ear = ε
+          Rar = ε
+              [0020, 0009] (0031,            opGreater) {>}
+          Fbr = 'opGreater' Ra Fbr
+          Ra = Ea Rar
+          Ea = Ta Ear
+          Ta = Pa Tar
+          Pa = Fa Par
+              [0020, 0011] (0016,             constInt) {0}
+          Fa = 'constInt'
+          Par = ε
+          Tar = ε
+          Ear = ε
+          Rar = ε
+          Fbr = ε
+          Tbr = ε
+          Ebr = ε
+              [0020, 0012] (0006,             paramEnd) {)}
+              [0020, 0014] (0014,           beginScope) {{}
+  21  		int x;
+          Body = '{' BodyPart '}'
+          BodyPart = DeclId BodyPart
+          DeclId = Type LId ';'
+              [0021, 0003] (0008,              typeInt) {int}
+          Type = 'int'
+          LId = Id AttrOpt LIdr
+              [0021, 0007] (0004,                   id) {x}
+          Id = 'id' ArrayOpt
+          ArrayOpt = ε
+          AttrOpt = ε
+          LIdr = ε
+              [0021, 0008] (0044,            semicolon) {;}
+  22  	}
+          BodyPart = ε
+              [0022, 0002] (0015,             endScope) {}}
+  23  	int arr[n];
+          Ifr = ε
+          BodyPart = DeclId BodyPart
+          DeclId = Type LId ';'
+              [0023, 0002] (0008,              typeInt) {int}
+          Type = 'int'
+          LId = Id AttrOpt LIdr
+              [0023, 0006] (0004,                   id) {arr}
+          Id = 'id' ArrayOpt
+              [0023, 0009] (0027,             arrBegin) {[}
+          ArrayOpt = '[' Ea ']'
+          Ea = Ta Ear
+          Ta = Pa Tar
+          Pa = Fa Par
+              [0023, 0010] (0004,                   id) {n}
+          IdOrFunCall = 'id' IdOrFunCallr
+          IdOrFunCallr = ε
+          Par = ε
+          Tar = ε
+          Ear = ε
+              [0023, 0011] (0028,               arrEnd) {]}
+          AttrOpt = ε
+          LIdr = ε
+              [0023, 0012] (0044,            semicolon) {;}
+  24  	read(arr);
+          BodyPart = Command BodyPart
+              [0024, 0002] (0050,                 scan) {read}
+          Command = 'scan' '(' ScanLParam ')' ';'
+              [0024, 0006] (0005,             paramBeg) {(}
+              [0024, 0007] (0004,                   id) {arr}
+          ScanLParam = 'id' ArrayOpt ScanLParamr
+          ArrayOpt = ε
+          ScanLParamr = ε
+              [0024, 0010] (0006,             paramEnd) {)}
+              [0024, 0011] (0044,            semicolon) {;}
+  25  	for (int i : (0, n, 1)) {
+          BodyPart = Command BodyPart
+              [0025, 0002] (0045,              forLoop) {for}
+          Command = 'forLoop' ForParams
+              [0025, 0006] (0005,             paramBeg) {(}
+          ForParams = '(' 'typeInt' 'id' ':' '(' Ea ',' Ea ForStep ')' ')' Body
+              [0025, 0007] (0008,              typeInt) {int}
+              [0025, 0011] (0004,                   id) {i}
+              [0025, 0013] (0019,                colon) {:}
+              [0025, 0015] (0005,             paramBeg) {(}
+          Ea = Ta Ear
+          Ta = Pa Tar
+          Pa = Fa Par
+              [0025, 0016] (0016,             constInt) {0}
+          Fa = 'constInt'
+          Par = ε
+          Tar = ε
+          Ear = ε
+              [0025, 0017] (0007,             commaSep) {,}
+          Ea = Ta Ear
+          Ta = Pa Tar
+          Pa = Fa Par
+              [0025, 0019] (0004,                   id) {n}
+          IdOrFunCall = 'id' IdOrFunCallr
+          IdOrFunCallr = ε
+          Par = ε
+          Tar = ε
+          Ear = ε
+              [0025, 0020] (0007,             commaSep) {,}
+          ForStep = ',' Ea
+          Ea = Ta Ear
+          Ta = Pa Tar
+          Pa = Fa Par
+              [0025, 0022] (0016,             constInt) {1}
+          Fa = 'constInt'
+          Par = ε
+          Tar = ε
+          Ear = ε
+              [0025, 0023] (0006,             paramEnd) {)}
+              [0025, 0024] (0006,             paramEnd) {)}
+              [0025, 0026] (0014,           beginScope) {{}
+  26  		print("%d ", arr[i]);
+          Body = '{' BodyPart '}'
+          BodyPart = Command BodyPart
+              [0026, 0003] (0051,                print) {print}
+          Command = 'print' '(' 'constStr' PrintLParam ')' ';'
+              [0026, 0008] (0005,             paramBeg) {(}
+              [0026, 0009] (0022,             constStr) {"%d "}
+              [0026, 0014] (0007,             commaSep) {,}
+          PrintLParam = ',' Ec PrintLParam
+          Ec = Fc Ecr
+          Eb = Tb Ebr
+          Tb = Fb Tbr
+          Fb = Ra Fbr
+          Ra = Ea Rar
+          Ea = Ta Ear
+          Ta = Pa Tar
+          Pa = Fa Par
+              [0026, 0016] (0004,                   id) {arr}
+          IdOrFunCall = 'id' IdOrFunCallr
+              [0026, 0019] (0027,             arrBegin) {[}
+          IdOrFunCallr = '[' Ea ']'
+          Ea = Ta Ear
+          Ta = Pa Tar
+          Pa = Fa Par
+              [0026, 0020] (0004,                   id) {i}
+          IdOrFunCall = 'id' IdOrFunCallr
+          IdOrFunCallr = ε
+          Par = ε
+          Tar = ε
+          Ear = ε
+              [0026, 0021] (0028,               arrEnd) {]}
+          Par = ε
+          Tar = ε
+          Ear = ε
+          Rar = ε
+          Fbr = ε
+          Tbr = ε
+          Ebr = ε
+          Ecr = ε
+          PrintLParam = ε
+              [0026, 0022] (0006,             paramEnd) {)}
+              [0026, 0023] (0044,            semicolon) {;}
+  27  	}
+          BodyPart = ε
+              [0027, 0002] (0015,             endScope) {}}
+  28  	shellSort(arr);
+          BodyPart = BodyPartr ';' BodyPart
+              [0028, 0002] (0004,                   id) {shellSort}
+          BodyPartr = 'id' ParamAttr
+              [0028, 0011] (0005,             paramBeg) {(}
+          ParamAttrib = '(' LParamCall ')'
+          LParamCall = Ec LParamCallr
+          Ec = Fc Ecr
+          Eb = Tb Ebr
+          Tb = Fb Tbr
+          Fb = Ra Fbr
+          Ra = Ea Rar
+          Ea = Ta Ear
+          Ta = Pa Tar
+          Pa = Fa Par
+              [0028, 0012] (0004,                   id) {arr}
+          IdOrFunCall = 'id' IdOrFunCallr
+          IdOrFunCallr = ε
+          Par = ε
+          Tar = ε
+          Ear = ε
+          Rar = ε
+          Fbr = ε
+          Tbr = ε
+          Ebr = ε
+          Ecr = ε
+          LParamCallr = ε
+              [0028, 0015] (0006,             paramEnd) {)}
+              [0028, 0016] (0044,            semicolon) {;}
+  29  	for (int i : (0, n, 1)) {
+          BodyPart = Command BodyPart
+              [0029, 0002] (0045,              forLoop) {for}
+          Command = 'forLoop' ForParams
+              [0029, 0006] (0005,             paramBeg) {(}
+          ForParams = '(' 'typeInt' 'id' ':' '(' Ea ',' Ea ForStep ')' ')' Body
+              [0029, 0007] (0008,              typeInt) {int}
+              [0029, 0011] (0004,                   id) {i}
+              [0029, 0013] (0019,                colon) {:}
+              [0029, 0015] (0005,             paramBeg) {(}
+          Ea = Ta Ear
+          Ta = Pa Tar
+          Pa = Fa Par
+              [0029, 0016] (0016,             constInt) {0}
+          Fa = 'constInt'
+          Par = ε
+          Tar = ε
+          Ear = ε
+              [0029, 0017] (0007,             commaSep) {,}
+          Ea = Ta Ear
+          Ta = Pa Tar
+          Pa = Fa Par
+              [0029, 0019] (0004,                   id) {n}
+          IdOrFunCall = 'id' IdOrFunCallr
+          IdOrFunCallr = ε
+          Par = ε
+          Tar = ε
+          Ear = ε
+              [0029, 0020] (0007,             commaSep) {,}
+          ForStep = ',' Ea
+          Ea = Ta Ear
+          Ta = Pa Tar
+          Pa = Fa Par
+              [0029, 0022] (0016,             constInt) {1}
+          Fa = 'constInt'
+          Par = ε
+          Tar = ε
+          Ear = ε
+              [0029, 0023] (0006,             paramEnd) {)}
+              [0029, 0024] (0006,             paramEnd) {)}
+              [0029, 0026] (0014,           beginScope) {{}
+  30  		print("%d ", arr[i]);
+          Body = '{' BodyPart '}'
+          BodyPart = Command BodyPart
+              [0030, 0003] (0051,                print) {print}
+          Command = 'print' '(' 'constStr' PrintLParam ')' ';'
+              [0030, 0008] (0005,             paramBeg) {(}
+              [0030, 0009] (0022,             constStr) {"%d "}
+              [0030, 0014] (0007,             commaSep) {,}
+          PrintLParam = ',' Ec PrintLParam
+          Ec = Fc Ecr
+          Eb = Tb Ebr
+          Tb = Fb Tbr
+          Fb = Ra Fbr
+          Ra = Ea Rar
+          Ea = Ta Ear
+          Ta = Pa Tar
+          Pa = Fa Par
+              [0030, 0016] (0004,                   id) {arr}
+          IdOrFunCall = 'id' IdOrFunCallr
+              [0030, 0019] (0027,             arrBegin) {[}
+          IdOrFunCallr = '[' Ea ']'
+          Ea = Ta Ear
+          Ta = Pa Tar
+          Pa = Fa Par
+              [0030, 0020] (0004,                   id) {i}
+          IdOrFunCall = 'id' IdOrFunCallr
+          IdOrFunCallr = ε
+          Par = ε
+          Tar = ε
+          Ear = ε
+              [0030, 0021] (0028,               arrEnd) {]}
+          Par = ε
+          Tar = ε
+          Ear = ε
+          Rar = ε
+          Fbr = ε
+          Tbr = ε
+          Ebr = ε
+          Ecr = ε
+          PrintLParam = ε
+              [0030, 0022] (0006,             paramEnd) {)}
+              [0030, 0023] (0044,            semicolon) {;}
+  31  	}
+          BodyPart = ε
+              [0031, 0002] (0015,             endScope) {}}
+  32  	print("\n");
+          BodyPart = Command BodyPart
+              [0032, 0002] (0051,                print) {print}
+          Command = 'print' '(' 'constStr' PrintLParam ')' ';'
+              [0032, 0007] (0005,             paramBeg) {(}
+              [0032, 0008] (0022,             constStr) {"\n"}
+          PrintLParam = ε
+              [0032, 0012] (0006,             paramEnd) {)}
+              [0032, 0013] (0044,            semicolon) {;}
+  33  	return 0;
+              [0033, 0002] (0002,               funRet) {return}
+          BodyPart = 'return' Return ';'
+          Return = Ec
+          Ec = Fc Ecr
+          Eb = Tb Ebr
+          Tb = Fb Tbr
+          Fb = Ra Fbr
+          Ra = Ea Rar
+          Ea = Ta Ear
+          Ta = Pa Tar
+          Pa = Fa Par
+              [0033, 0009] (0016,             constInt) {0}
+          Fa = 'constInt'
+          Par = ε
+          Tar = ε
+          Ear = ε
+          Rar = ε
+          Fbr = ε
+          Tbr = ε
+          Ebr = ε
+          Ecr = ε
+              [0033, 0010] (0044,            semicolon) {;}
+  34  }
+              [0034, 0001] (0015,             endScope) {}}
+          S = ε

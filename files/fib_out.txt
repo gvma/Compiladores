@@ -1,0 +1,602 @@
+   1  proc fib(int n) {
+          S = ProcDef S
+              [0001, 0001] (0043,              procDef) {proc}
+          ProcDecl = 'proc' FunName '(' LParamDecl ')' Body
+              [0001, 0006] (0004,                   id) {fib}
+          FunName = 'id'
+              [0001, 0009] (0005,             paramBeg) {(}
+          LParamDecl = Type 'id' ArrayOpt LParamDeclr
+              [0001, 0010] (0008,              typeInt) {int}
+          Type = 'int'
+              [0001, 0014] (0004,                   id) {n}
+          ArrayOpt = ε
+              [0001, 0015] (0006,             paramEnd) {)}
+              [0001, 0017] (0014,           beginScope) {{}
+   2  	int n1 = 0, n2 = 1, n3;
+          Body = '{' BodyPart '}'
+          BodyPart = DeclId BodyPart
+          DeclId = Type LId ';'
+              [0002, 0002] (0008,              typeInt) {int}
+          Type = 'int'
+          LId = Id AttrOpt LIdr
+              [0002, 0006] (0004,                   id) {n1}
+          Id = 'id' ArrayOpt
+          ArrayOpt = ε
+              [0002, 0009] (0041,             opAttrib) {=}
+          AttrOpt = '=' Ec
+          Ec = Fc Ecr
+          Eb = Tb Ebr
+          Tb = Fb Tbr
+          Fb = Ra Fbr
+          Ra = Ea Rar
+          Ea = Ta Ear
+          Ta = Pa Tar
+          Pa = Fa Par
+              [0002, 0011] (0016,             constInt) {0}
+          Fa = 'constInt'
+          Par = ε
+          Tar = ε
+          Ear = ε
+          Rar = ε
+          Fbr = ε
+          Tbr = ε
+          Ebr = ε
+          Ecr = ε
+              [0002, 0012] (0007,             commaSep) {,}
+          LIdr = ',' Id AttrOpt LIdr
+              [0002, 0014] (0004,                   id) {n2}
+          Id = 'id' ArrayOpt
+          ArrayOpt = ε
+              [0002, 0017] (0041,             opAttrib) {=}
+          AttrOpt = '=' Ec
+          Ec = Fc Ecr
+          Eb = Tb Ebr
+          Tb = Fb Tbr
+          Fb = Ra Fbr
+          Ra = Ea Rar
+          Ea = Ta Ear
+          Ta = Pa Tar
+          Pa = Fa Par
+              [0002, 0019] (0016,             constInt) {1}
+          Fa = 'constInt'
+          Par = ε
+          Tar = ε
+          Ear = ε
+          Rar = ε
+          Fbr = ε
+          Tbr = ε
+          Ebr = ε
+          Ecr = ε
+              [0002, 0020] (0007,             commaSep) {,}
+          LIdr = ',' Id AttrOpt LIdr
+              [0002, 0022] (0004,                   id) {n3}
+          Id = 'id' ArrayOpt
+          ArrayOpt = ε
+          AttrOpt = ε
+          LIdr = ε
+              [0002, 0024] (0044,            semicolon) {;}
+   3  	if (n == 0) {
+          BodyPart = Command BodyPart
+              [0003, 0002] (0047,               condIf) {if}
+          Command = 'condIf' '(' Eb ')' Body Ifr
+              [0003, 0005] (0005,             paramBeg) {(}
+          Eb = Tb Ebr
+          Tb = Fb Tbr
+          Fb = Ra Fbr
+          Ra = Ea Rar
+          Ea = Ta Ear
+          Ta = Pa Tar
+          Pa = Fa Par
+              [0003, 0006] (0004,                   id) {n}
+          IdOrFunCall = 'id' IdOrFunCallr
+          IdOrFunCallr = ε
+          Par = ε
+          Tar = ε
+          Ear = ε
+              [0003, 0008] (0035,             opEquals) {==}
+          Rar = 'opEquals' Ea Rar
+          Ea = Ta Ear
+          Ta = Pa Tar
+          Pa = Fa Par
+              [0003, 0011] (0016,             constInt) {0}
+          Fa = 'constInt'
+          Par = ε
+          Tar = ε
+          Ear = ε
+          Rar = ε
+          Fbr = ε
+          Tbr = ε
+          Ebr = ε
+              [0003, 0012] (0006,             paramEnd) {)}
+              [0003, 0014] (0014,           beginScope) {{}
+   4  		print("%d\n", n);
+          Body = '{' BodyPart '}'
+          BodyPart = Command BodyPart
+              [0004, 0003] (0051,                print) {print}
+          Command = 'print' '(' 'constStr' PrintLParam ')' ';'
+              [0004, 0008] (0005,             paramBeg) {(}
+              [0004, 0009] (0022,             constStr) {"%d\n"}
+              [0004, 0015] (0007,             commaSep) {,}
+          PrintLParam = ',' Ec PrintLParam
+          Ec = Fc Ecr
+          Eb = Tb Ebr
+          Tb = Fb Tbr
+          Fb = Ra Fbr
+          Ra = Ea Rar
+          Ea = Ta Ear
+          Ta = Pa Tar
+          Pa = Fa Par
+              [0004, 0017] (0004,                   id) {n}
+          IdOrFunCall = 'id' IdOrFunCallr
+          IdOrFunCallr = ε
+          Par = ε
+          Tar = ε
+          Ear = ε
+          Rar = ε
+          Fbr = ε
+          Tbr = ε
+          Ebr = ε
+          Ecr = ε
+          PrintLParam = ε
+              [0004, 0018] (0006,             paramEnd) {)}
+              [0004, 0019] (0044,            semicolon) {;}
+   5  	} ceif (n == 1) {
+          BodyPart = ε
+              [0005, 0002] (0015,             endScope) {}}
+              [0005, 0004] (0048,           condElseIf) {ceif}
+          Ifr = 'condElseIf' '(' Eb ')' Body Ifr
+              [0005, 0009] (0005,             paramBeg) {(}
+          Eb = Tb Ebr
+          Tb = Fb Tbr
+          Fb = Ra Fbr
+          Ra = Ea Rar
+          Ea = Ta Ear
+          Ta = Pa Tar
+          Pa = Fa Par
+              [0005, 0010] (0004,                   id) {n}
+          IdOrFunCall = 'id' IdOrFunCallr
+          IdOrFunCallr = ε
+          Par = ε
+          Tar = ε
+          Ear = ε
+              [0005, 0012] (0035,             opEquals) {==}
+          Rar = 'opEquals' Ea Rar
+          Ea = Ta Ear
+          Ta = Pa Tar
+          Pa = Fa Par
+              [0005, 0015] (0016,             constInt) {1}
+          Fa = 'constInt'
+          Par = ε
+          Tar = ε
+          Ear = ε
+          Rar = ε
+          Fbr = ε
+          Tbr = ε
+          Ebr = ε
+              [0005, 0016] (0006,             paramEnd) {)}
+              [0005, 0018] (0014,           beginScope) {{}
+   6  		print("0, %d\n", n);
+          Body = '{' BodyPart '}'
+          BodyPart = Command BodyPart
+              [0006, 0003] (0051,                print) {print}
+          Command = 'print' '(' 'constStr' PrintLParam ')' ';'
+              [0006, 0008] (0005,             paramBeg) {(}
+              [0006, 0009] (0022,             constStr) {"0, %d\n"}
+              [0006, 0018] (0007,             commaSep) {,}
+          PrintLParam = ',' Ec PrintLParam
+          Ec = Fc Ecr
+          Eb = Tb Ebr
+          Tb = Fb Tbr
+          Fb = Ra Fbr
+          Ra = Ea Rar
+          Ea = Ta Ear
+          Ta = Pa Tar
+          Pa = Fa Par
+              [0006, 0020] (0004,                   id) {n}
+          IdOrFunCall = 'id' IdOrFunCallr
+          IdOrFunCallr = ε
+          Par = ε
+          Tar = ε
+          Ear = ε
+          Rar = ε
+          Fbr = ε
+          Tbr = ε
+          Ebr = ε
+          Ecr = ε
+          PrintLParam = ε
+              [0006, 0021] (0006,             paramEnd) {)}
+              [0006, 0022] (0044,            semicolon) {;}
+   7  	} else {
+          BodyPart = ε
+              [0007, 0002] (0015,             endScope) {}}
+              [0007, 0004] (0049,             condElse) {else}
+          Ifr = 'condElse' Body
+              [0007, 0009] (0014,           beginScope) {{}
+   8  		string separator = "";
+          Body = '{' BodyPart '}'
+          BodyPart = DeclId BodyPart
+          DeclId = Type LId ';'
+              [0008, 0003] (0013,              typeStr) {string}
+          Type = 'string'
+          LId = Id AttrOpt LIdr
+              [0008, 0010] (0004,                   id) {separator}
+          Id = 'id' ArrayOpt
+          ArrayOpt = ε
+              [0008, 0020] (0041,             opAttrib) {=}
+          AttrOpt = '=' Ec
+          Ec = Fc Ecr
+          Eb = Tb Ebr
+          Tb = Fb Tbr
+          Fb = Ra Fbr
+          Ra = Ea Rar
+          Ea = Ta Ear
+          Ta = Pa Tar
+          Pa = Fa Par
+              [0008, 0022] (0022,             constStr) {""}
+          Fa = 'constStr'
+          Par = ε
+          Tar = ε
+          Ear = ε
+          Rar = ε
+          Fbr = ε
+          Tbr = ε
+          Ebr = ε
+          Ecr = ε
+          LIdr = ε
+              [0008, 0024] (0044,            semicolon) {;}
+   9  		print("0, 1, ");
+          BodyPart = Command BodyPart
+              [0009, 0003] (0051,                print) {print}
+          Command = 'print' '(' 'constStr' PrintLParam ')' ';'
+              [0009, 0008] (0005,             paramBeg) {(}
+              [0009, 0009] (0022,             constStr) {"0, 1, "}
+          PrintLParam = ε
+              [0009, 0017] (0006,             paramEnd) {)}
+              [0009, 0018] (0044,            semicolon) {;}
+  10  		while (true) {
+          BodyPart = Command BodyPart
+              [0010, 0003] (0046,            whileLoop) {while}
+          Command = 'whileLoop' '(' Eb ')' Body
+              [0010, 0009] (0005,             paramBeg) {(}
+          Eb = Tb Ebr
+          Tb = Fb Tbr
+          Fb = Ra Fbr
+          Ra = Ea Rar
+          Ea = Ta Ear
+          Ta = Pa Tar
+          Pa = Fa Par
+              [0010, 0010] (0020,            constBool) {true}
+          Fa = 'constBool'
+          Par = ε
+          Tar = ε
+          Ear = ε
+          Rar = ε
+          Fbr = ε
+          Tbr = ε
+          Ebr = ε
+              [0010, 0014] (0006,             paramEnd) {)}
+              [0010, 0016] (0014,           beginScope) {{}
+  11  			n3 = n1 + n2;
+          Body = '{' BodyPart '}'
+          BodyPart = BodyPartr ';' BodyPart
+              [0011, 0004] (0004,                   id) {n3}
+          BodyPartr = 'id' ParamAttr
+              [0011, 0007] (0041,             opAttrib) {=}
+          ParamAttrib = '=' Ec LAttr
+          Ec = Fc Ecr
+          Eb = Tb Ebr
+          Tb = Fb Tbr
+          Fb = Ra Fbr
+          Ra = Ea Rar
+          Ea = Ta Ear
+          Ta = Pa Tar
+          Pa = Fa Par
+              [0011, 0009] (0004,                   id) {n1}
+          IdOrFunCall = 'id' IdOrFunCallr
+          IdOrFunCallr = ε
+          Par = ε
+          Tar = ε
+              [0011, 0012] (0023,                opAdd) {+}
+          Ear = 'opAdd' Ta Ear
+          Ta = Pa Tar
+          Pa = Fa Par
+              [0011, 0014] (0004,                   id) {n2}
+          IdOrFunCall = 'id' IdOrFunCallr
+          IdOrFunCallr = ε
+          Par = ε
+          Tar = ε
+          Ear = ε
+          Rar = ε
+          Fbr = ε
+          Tbr = ε
+          Ebr = ε
+          Ecr = ε
+          LAttr = ε
+              [0011, 0016] (0044,            semicolon) {;}
+  12  			print("%s%d", separator, n3);
+          BodyPart = Command BodyPart
+              [0012, 0004] (0051,                print) {print}
+          Command = 'print' '(' 'constStr' PrintLParam ')' ';'
+              [0012, 0009] (0005,             paramBeg) {(}
+              [0012, 0010] (0022,             constStr) {"%s%d"}
+              [0012, 0016] (0007,             commaSep) {,}
+          PrintLParam = ',' Ec PrintLParam
+          Ec = Fc Ecr
+          Eb = Tb Ebr
+          Tb = Fb Tbr
+          Fb = Ra Fbr
+          Ra = Ea Rar
+          Ea = Ta Ear
+          Ta = Pa Tar
+          Pa = Fa Par
+              [0012, 0018] (0004,                   id) {separator}
+          IdOrFunCall = 'id' IdOrFunCallr
+          IdOrFunCallr = ε
+          Par = ε
+          Tar = ε
+          Ear = ε
+          Rar = ε
+          Fbr = ε
+          Tbr = ε
+          Ebr = ε
+          Ecr = ε
+              [0012, 0027] (0007,             commaSep) {,}
+          PrintLParam = ',' Ec PrintLParam
+          Ec = Fc Ecr
+          Eb = Tb Ebr
+          Tb = Fb Tbr
+          Fb = Ra Fbr
+          Ra = Ea Rar
+          Ea = Ta Ear
+          Ta = Pa Tar
+          Pa = Fa Par
+              [0012, 0029] (0004,                   id) {n3}
+          IdOrFunCall = 'id' IdOrFunCallr
+          IdOrFunCallr = ε
+          Par = ε
+          Tar = ε
+          Ear = ε
+          Rar = ε
+          Fbr = ε
+          Tbr = ε
+          Ebr = ε
+          Ecr = ε
+          PrintLParam = ε
+              [0012, 0031] (0006,             paramEnd) {)}
+              [0012, 0032] (0044,            semicolon) {;}
+  13  			if (n3 >= n) {
+          BodyPart = Command BodyPart
+              [0013, 0004] (0047,               condIf) {if}
+          Command = 'condIf' '(' Eb ')' Body Ifr
+              [0013, 0007] (0005,             paramBeg) {(}
+          Eb = Tb Ebr
+          Tb = Fb Tbr
+          Fb = Ra Fbr
+          Ra = Ea Rar
+          Ea = Ta Ear
+          Ta = Pa Tar
+          Pa = Fa Par
+              [0013, 0008] (0004,                   id) {n3}
+          IdOrFunCall = 'id' IdOrFunCallr
+          IdOrFunCallr = ε
+          Par = ε
+          Tar = ε
+          Ear = ε
+          Rar = ε
+              [0013, 0011] (0033,               opGreq) {>=}
+          Fbr = 'opGreq' Ra Fbr
+          Ra = Ea Rar
+          Ea = Ta Ear
+          Ta = Pa Tar
+          Pa = Fa Par
+              [0013, 0014] (0004,                   id) {n}
+          IdOrFunCall = 'id' IdOrFunCallr
+          IdOrFunCallr = ε
+          Par = ε
+          Tar = ε
+          Ear = ε
+          Rar = ε
+          Fbr = ε
+          Tbr = ε
+          Ebr = ε
+              [0013, 0015] (0006,             paramEnd) {)}
+              [0013, 0017] (0014,           beginScope) {{}
+  14  				print("\n");
+          Body = '{' BodyPart '}'
+          BodyPart = Command BodyPart
+              [0014, 0005] (0051,                print) {print}
+          Command = 'print' '(' 'constStr' PrintLParam ')' ';'
+              [0014, 0010] (0005,             paramBeg) {(}
+              [0014, 0011] (0022,             constStr) {"\n"}
+          PrintLParam = ε
+              [0014, 0015] (0006,             paramEnd) {)}
+              [0014, 0016] (0044,            semicolon) {;}
+  15  				return;
+              [0015, 0005] (0002,               funRet) {return}
+          BodyPart = 'return' Return ';'
+          Return = ε
+              [0015, 0011] (0044,            semicolon) {;}
+  16  			}
+              [0016, 0004] (0015,             endScope) {}}
+  17  			separator = ", ";
+          Ifr = ε
+          BodyPart = BodyPartr ';' BodyPart
+              [0017, 0004] (0004,                   id) {separator}
+          BodyPartr = 'id' ParamAttr
+              [0017, 0014] (0041,             opAttrib) {=}
+          ParamAttrib = '=' Ec LAttr
+          Ec = Fc Ecr
+          Eb = Tb Ebr
+          Tb = Fb Tbr
+          Fb = Ra Fbr
+          Ra = Ea Rar
+          Ea = Ta Ear
+          Ta = Pa Tar
+          Pa = Fa Par
+              [0017, 0016] (0022,             constStr) {", "}
+          Fa = 'constStr'
+          Par = ε
+          Tar = ε
+          Ear = ε
+          Rar = ε
+          Fbr = ε
+          Tbr = ε
+          Ebr = ε
+          Ecr = ε
+          LAttr = ε
+              [0017, 0020] (0044,            semicolon) {;}
+  18  			n1 = n2;
+          BodyPart = BodyPartr ';' BodyPart
+              [0018, 0004] (0004,                   id) {n1}
+          BodyPartr = 'id' ParamAttr
+              [0018, 0007] (0041,             opAttrib) {=}
+          ParamAttrib = '=' Ec LAttr
+          Ec = Fc Ecr
+          Eb = Tb Ebr
+          Tb = Fb Tbr
+          Fb = Ra Fbr
+          Ra = Ea Rar
+          Ea = Ta Ear
+          Ta = Pa Tar
+          Pa = Fa Par
+              [0018, 0009] (0004,                   id) {n2}
+          IdOrFunCall = 'id' IdOrFunCallr
+          IdOrFunCallr = ε
+          Par = ε
+          Tar = ε
+          Ear = ε
+          Rar = ε
+          Fbr = ε
+          Tbr = ε
+          Ebr = ε
+          Ecr = ε
+          LAttr = ε
+              [0018, 0011] (0044,            semicolon) {;}
+  19  			n2 = n3;
+          BodyPart = BodyPartr ';' BodyPart
+              [0019, 0004] (0004,                   id) {n2}
+          BodyPartr = 'id' ParamAttr
+              [0019, 0007] (0041,             opAttrib) {=}
+          ParamAttrib = '=' Ec LAttr
+          Ec = Fc Ecr
+          Eb = Tb Ebr
+          Tb = Fb Tbr
+          Fb = Ra Fbr
+          Ra = Ea Rar
+          Ea = Ta Ear
+          Ta = Pa Tar
+          Pa = Fa Par
+              [0019, 0009] (0004,                   id) {n3}
+          IdOrFunCall = 'id' IdOrFunCallr
+          IdOrFunCallr = ε
+          Par = ε
+          Tar = ε
+          Ear = ε
+          Rar = ε
+          Fbr = ε
+          Tbr = ε
+          Ebr = ε
+          Ecr = ε
+          LAttr = ε
+              [0019, 0011] (0044,            semicolon) {;}
+  20  		}
+          BodyPart = ε
+              [0020, 0003] (0015,             endScope) {}}
+  21  	}
+          BodyPart = ε
+              [0021, 0002] (0015,             endScope) {}}
+  22  }
+          BodyPart = ε
+              [0022, 0001] (0015,             endScope) {}}
+  23  
+  24  fun int main() {
+          S = FunDecl S
+              [0024, 0001] (0001,               funDef) {fun}
+          FunDecl = 'fun' Type FunName '(' LParamDecl ')' Body
+              [0024, 0005] (0008,              typeInt) {int}
+          Type = 'int'
+              [0024, 0009] (0003,                 main) {main}
+          FunName = 'main'
+              [0024, 0013] (0005,             paramBeg) {(}
+          LParamDecl = ε
+              [0024, 0014] (0006,             paramEnd) {)}
+              [0024, 0016] (0014,           beginScope) {{}
+  25  	int n;
+          Body = '{' BodyPart '}'
+          BodyPart = DeclId BodyPart
+          DeclId = Type LId ';'
+              [0025, 0002] (0008,              typeInt) {int}
+          Type = 'int'
+          LId = Id AttrOpt LIdr
+              [0025, 0006] (0004,                   id) {n}
+          Id = 'id' ArrayOpt
+          ArrayOpt = ε
+          AttrOpt = ε
+          LIdr = ε
+              [0025, 0007] (0044,            semicolon) {;}
+  26  	read(n);
+          BodyPart = Command BodyPart
+              [0026, 0002] (0050,                 scan) {read}
+          Command = 'scan' '(' ScanLParam ')' ';'
+              [0026, 0006] (0005,             paramBeg) {(}
+              [0026, 0007] (0004,                   id) {n}
+          ScanLParam = 'id' ArrayOpt ScanLParamr
+          ArrayOpt = ε
+          ScanLParamr = ε
+              [0026, 0008] (0006,             paramEnd) {)}
+              [0026, 0009] (0044,            semicolon) {;}
+  27  	fib(n);
+          BodyPart = BodyPartr ';' BodyPart
+              [0027, 0002] (0004,                   id) {fib}
+          BodyPartr = 'id' ParamAttr
+              [0027, 0005] (0005,             paramBeg) {(}
+          ParamAttrib = '(' LParamCall ')'
+          LParamCall = Ec LParamCallr
+          Ec = Fc Ecr
+          Eb = Tb Ebr
+          Tb = Fb Tbr
+          Fb = Ra Fbr
+          Ra = Ea Rar
+          Ea = Ta Ear
+          Ta = Pa Tar
+          Pa = Fa Par
+              [0027, 0006] (0004,                   id) {n}
+          IdOrFunCall = 'id' IdOrFunCallr
+          IdOrFunCallr = ε
+          Par = ε
+          Tar = ε
+          Ear = ε
+          Rar = ε
+          Fbr = ε
+          Tbr = ε
+          Ebr = ε
+          Ecr = ε
+          LParamCallr = ε
+              [0027, 0007] (0006,             paramEnd) {)}
+              [0027, 0008] (0044,            semicolon) {;}
+  28  	return 0;
+              [0028, 0002] (0002,               funRet) {return}
+          BodyPart = 'return' Return ';'
+          Return = Ec
+          Ec = Fc Ecr
+          Eb = Tb Ebr
+          Tb = Fb Tbr
+          Fb = Ra Fbr
+          Ra = Ea Rar
+          Ea = Ta Ear
+          Ta = Pa Tar
+          Pa = Fa Par
+              [0028, 0009] (0016,             constInt) {0}
+          Fa = 'constInt'
+          Par = ε
+          Tar = ε
+          Ear = ε
+          Rar = ε
+          Fbr = ε
+          Tbr = ε
+          Ebr = ε
+          Ecr = ε
+              [0028, 0010] (0044,            semicolon) {;}
+  29  }
+              [0029, 0001] (0015,             endScope) {}}
+          S = ε
