@@ -35,13 +35,9 @@ public class Syntactic {
 		}
 	}
 
-	public boolean checkCategory(boolean isTerminal, TokenCategory... categories) {
+	public boolean checkCategory(TokenCategory... categories) {
 		for (TokenCategory category: categories) {
 			if (currentToken.getTokenCategory() == category) {
-				if (isTerminal) {
-					System.out.println(currentToken);
-					setNextToken(true);
-				}
 				return true;
 			}
 		}
@@ -60,20 +56,20 @@ public class Syntactic {
 
 	public void sendError(String message) {
 		System.err.println("Error: " + message);
-		System.exit(0);
+		System.exit(1);
 	}
 
 	public void fS() {
-		if (checkCategory(false, TokenCategory.constVar, TokenCategory.typeInt, TokenCategory.typeFloat, TokenCategory.typeBool, TokenCategory.typeChar, TokenCategory.typeStr)) {
+		if (checkCategory(TokenCategory.constVar, TokenCategory.typeInt, TokenCategory.typeFloat, TokenCategory.typeBool, TokenCategory.typeChar, TokenCategory.typeStr)) {
 			printProduction("S", "DeclId S");
 			fDeclId();
 			fS();
-		} else if (checkCategory(false, TokenCategory.funDef)) {
+		} else if (checkCategory(TokenCategory.funDef)) {
 			printProduction("S", "FunDecl S");
 			fFunDecl();
 			fS();
-		} else if (checkCategory(false, TokenCategory.procDef)) {
-			printProduction("S", "ProcDef S");
+		} else if (checkCategory(TokenCategory.procDef)) {
+			printProduction("S", "ProcDecl S");
 			fProcDecl();
 			fS();
 		} else {
@@ -82,34 +78,52 @@ public class Syntactic {
 	}
 
 	public void fDeclId() {
-		if (checkCategory(false, TokenCategory.typeInt, TokenCategory.typeFloat, TokenCategory.typeBool, TokenCategory.typeChar, TokenCategory.typeStr)) {
+		if (checkCategory(TokenCategory.typeInt, TokenCategory.typeFloat, TokenCategory.typeBool, TokenCategory.typeChar, TokenCategory.typeStr)) {
 			printProduction("DeclId", "Type LId ';'");
 			fType();
 			fLId();
-			if (!checkCategory(true, TokenCategory.semicolon)){
+			if (!checkCategory(TokenCategory.semicolon)){
 				unexpectedToken(";");
+			} else {
+				System.out.println(currentToken);
+				setNextToken(true);
 			}
-		} else if (checkCategory(true, TokenCategory.constVar)) {
+		} else if (checkCategory(TokenCategory.constVar)) {
 			printProduction("DeclId", "'const' Type LId ';'");
+			System.out.println(currentToken);
+			setNextToken(true);
 			fType();
 			fLId();
-			checkCategory(true, TokenCategory.semicolon);
+			if (checkCategory(TokenCategory.semicolon)) {
+				System.out.println(currentToken);
+				setNextToken(true);
+			}
 		} else {
 			unexpectedToken("int, float, bool, char string or const");
 		}
 	}
 	
 	public void fType() {
-		if (checkCategory(true, TokenCategory.typeInt)) {
+		if (checkCategory(TokenCategory.typeInt)) {
 			printProduction("Type", "'int'");
-		} else if (checkCategory(true, TokenCategory.typeFloat)) {
+			System.out.println(currentToken);
+			setNextToken(true);
+		} else if (checkCategory(TokenCategory.typeFloat)) {
 			printProduction("Type", "'float'");
-		} else if (checkCategory(true, TokenCategory.typeBool)) {
+			System.out.println(currentToken);
+			setNextToken(true);
+		} else if (checkCategory(TokenCategory.typeBool)) {
 			printProduction("Type", "'bool'");
-		} else if (checkCategory(true, TokenCategory.typeChar)) {
+			System.out.println(currentToken);
+			setNextToken(true);
+		} else if (checkCategory(TokenCategory.typeChar)) {
 			printProduction("Type", "'char'");
-		} else if (checkCategory(true, TokenCategory.typeStr)) {
+			System.out.println(currentToken);
+			setNextToken(true);
+		} else if (checkCategory(TokenCategory.typeStr)) {
 			printProduction("Type", "'string'");
+			System.out.println(currentToken);
+			setNextToken(true);
 		} else {
 			unexpectedToken("int, float, bool, char or string");
 		}
@@ -117,7 +131,7 @@ public class Syntactic {
 	
 	
 	public void fLId() {
-		if (checkCategory(false, TokenCategory.id)) {
+		if (checkCategory(TokenCategory.id)) {
 			printProduction("LId", "Id AttrOpt LIdr");
 			fId();
 			fAttrOpt();
@@ -128,8 +142,10 @@ public class Syntactic {
 	}
 	
 	public void fLIdr() {
-		if (checkCategory(true, TokenCategory.commaSep)) {
+		if (checkCategory(TokenCategory.commaSep)) {
 			printProduction("LIdr", "',' Id AttrOpt LIdr");
+			System.out.println(currentToken);
+			setNextToken(true);
 			fId();
 			fAttrOpt();
 			fLIdr();
@@ -139,8 +155,10 @@ public class Syntactic {
 	}
 	
 	public void fId() {
-		if (checkCategory(true, TokenCategory.id)) {
+		if (checkCategory(TokenCategory.id)) {
 			printProduction("Id", "'id' ArrayOpt");
+			System.out.println(currentToken);
+			setNextToken(true);
 			fArrayOpt();
 		} else {
 			unexpectedToken("id");
@@ -148,8 +166,10 @@ public class Syntactic {
 	}
 	
 	public void fAttrOpt() {
-		if (checkCategory(true, TokenCategory.opAttrib)) {
+		if (checkCategory(TokenCategory.opAttrib)) {
 			printProduction("AttrOpt", "'=' Ec");
+			System.out.println(currentToken);
+			setNextToken(true);
 			fEc();
 		} else {
 			printProduction("AttrOpt", epsilon);
@@ -157,13 +177,19 @@ public class Syntactic {
 	}
 	
 	public void fFunDecl() {
-		if (checkCategory(true, TokenCategory.funDef)) {
+		if (checkCategory(TokenCategory.funDef)) {
 			printProduction("FunDecl", "'fun' Type FunName '(' LParamDecl ')' Body");
+			System.out.println(currentToken);
+			setNextToken(true);
 			fType();
 			fFunName();
-			if (checkCategory(true, TokenCategory.paramBeg)) {
+			if (checkCategory(TokenCategory.paramBeg)) {
 				fLParamDecl();
-				if (checkCategory(true, TokenCategory.paramEnd)) {
+				System.out.println(currentToken);
+				setNextToken(true);
+				if (checkCategory(TokenCategory.paramEnd)) {
+					System.out.println(currentToken);
+					setNextToken(true);
 					fBody();
 				} else {
 					unexpectedToken(")");
@@ -177,17 +203,21 @@ public class Syntactic {
 	}
 	
 	public void fFunName() {
-		if (checkCategory(true, TokenCategory.id)) {
+		if (checkCategory(TokenCategory.id)) {
 			printProduction("FunName", "'id'");
-		} else if (checkCategory(true, TokenCategory.main)) {
+			System.out.println(currentToken);
+			setNextToken(true);
+		} else if (checkCategory(TokenCategory.main)) {
 			printProduction("FunName", "'main'");
+			System.out.println(currentToken);
+			setNextToken(true);
 		} else {
 			unexpectedToken("id or main");
 		}
 	}
 	
 	public void fLParamCall() {
-		if (checkCategory(false, TokenCategory.id, TokenCategory.paramBeg, TokenCategory.opSub, TokenCategory.constBool, TokenCategory.constChar, TokenCategory.constFloat, TokenCategory.constInt, TokenCategory.constStr)) {
+		if (checkCategory(TokenCategory.id, TokenCategory.paramBeg, TokenCategory.opSub, TokenCategory.constBool, TokenCategory.constChar, TokenCategory.constFloat, TokenCategory.constInt, TokenCategory.constStr)) {
 			printProduction("LParamCall", "Ec LParamCallr");
 			fEc();
 			fLParamCallr();
@@ -197,8 +227,10 @@ public class Syntactic {
 	}
 	
 	public void fLParamCallr() {
-		if (checkCategory(true, TokenCategory.commaSep)) {
+		if (checkCategory(TokenCategory.commaSep)) {
 			printProduction("LParamCallr", "',' Ec LParamCallr");
+			System.out.println(currentToken);
+			setNextToken(true);
 			fEc();
 			fLParamCallr();
 		} else {
@@ -207,10 +239,12 @@ public class Syntactic {
 	}
 	
 	public void fLParamDecl() {
-		if (checkCategory(false, TokenCategory.typeBool, TokenCategory.typeChar, TokenCategory.typeFloat, TokenCategory.typeInt, TokenCategory.typeStr)) {			
+		if (checkCategory(TokenCategory.typeBool, TokenCategory.typeChar, TokenCategory.typeFloat, TokenCategory.typeInt, TokenCategory.typeStr)) {			
 			printProduction("LParamDecl", "Type 'id' ArrayOpt LParamDeclr");
 			fType();
-			if (checkCategory(true, TokenCategory.id)) {
+			if (checkCategory(TokenCategory.id)) {
+				System.out.println(currentToken);
+				setNextToken(true);
 				fArrayOpt();
 				fLParamDeclr();
 			} else {
@@ -222,10 +256,14 @@ public class Syntactic {
 	}
 	
 	public void fLParamDeclr() {
-		if (checkCategory(true, TokenCategory.commaSep)) {
+		if (checkCategory(TokenCategory.commaSep)) {
 			printProduction("LParamDeclr", "',' Type 'id' ArrayOpt LParamDeclr");
+			System.out.println(currentToken);
+			setNextToken(true);
 			fType();
-			if (checkCategory(true, TokenCategory.id)) {
+			if (checkCategory(TokenCategory.id)) {
+				System.out.println(currentToken);
+				setNextToken(true);
 				fArrayOpt();
 				fLParamDeclr();
 			} else {
@@ -235,11 +273,16 @@ public class Syntactic {
 	}
 	
 	public void fArrayOpt() {
-		if (checkCategory(true, TokenCategory.arrBegin)) {
+		if (checkCategory(TokenCategory.arrBegin)) {
 			printProduction("ArrayOpt", "'[' Ea ']'");
+			System.out.println(currentToken);
+			setNextToken(true);
 			fEa();
-			if (!checkCategory(true, TokenCategory.arrEnd)) {
+			if (!checkCategory(TokenCategory.arrEnd)) {
 				unexpectedToken("]");
+			} else {
+				System.out.println(currentToken);
+				setNextToken(true);
 			}
 		} else {
 			printProduction("ArrayOpt", epsilon);
@@ -247,12 +290,18 @@ public class Syntactic {
 	}
 	
 	public void fProcDecl() {
-		if (checkCategory(true, TokenCategory.procDef)) {
+		if (checkCategory(TokenCategory.procDef)) {
 			printProduction("ProcDecl", "'proc' FunName '(' LParamDecl ')' Body");
+			System.out.println(currentToken);
+			setNextToken(true);
 			fFunName();
-			if (checkCategory(true, TokenCategory.paramBeg)) {
+			if (checkCategory(TokenCategory.paramBeg)) {
+				System.out.println(currentToken);
+				setNextToken(true);
 				fLParamDecl();
-				if (checkCategory(true, TokenCategory.paramEnd)) {
+				if (checkCategory(TokenCategory.paramEnd)) {
+					System.out.println(currentToken);
+					setNextToken(true);
 					fBody();
 				} else {
 					unexpectedToken(")");
@@ -266,13 +315,17 @@ public class Syntactic {
 	}
 	
 	public void fBody() {
-		if (checkCategory(true, TokenCategory.beginScope)) {
+		if (checkCategory(TokenCategory.beginScope)) {
 			++scopeCounter;
 			printProduction("Body", "'{' BodyPart '}'");
+			System.out.println(currentToken);
+			setNextToken(true);
 			fBodyPart();
-			if (!checkCategory(true, TokenCategory.endScope)) {
+			if (!checkCategory(TokenCategory.endScope)) {
 				unexpectedToken("}");
 			} else {
+				System.out.println(currentToken);
+				setNextToken(true);
 				--scopeCounter;
 			}
 		} else {
@@ -281,26 +334,34 @@ public class Syntactic {
 	}
 	
 	public void fBodyPart() {
-		if (checkCategory(false, TokenCategory.constVar, TokenCategory.typeInt, TokenCategory.typeFloat, TokenCategory.typeBool, TokenCategory.typeChar, TokenCategory.typeStr)) {
+		if (checkCategory(TokenCategory.constVar, TokenCategory.typeInt, TokenCategory.typeFloat, TokenCategory.typeBool, TokenCategory.typeChar, TokenCategory.typeStr)) {
 			printProduction("BodyPart", "DeclId BodyPart");
 			fDeclId();
 			fBodyPart();
-		} else if (checkCategory(false, TokenCategory.print, TokenCategory.scan, TokenCategory.whileLoop, TokenCategory.forLoop, TokenCategory.condIf)) {
+		} else if (checkCategory(TokenCategory.print, TokenCategory.scan, TokenCategory.whileLoop, TokenCategory.forLoop, TokenCategory.condIf)) {
 			printProduction("BodyPart", "Command BodyPart");
 			fCommand();
 			fBodyPart();
-		} else if (checkCategory(false, TokenCategory.id)) {
+		} else if (checkCategory(TokenCategory.id)) {
 			printProduction("BodyPart", "BodyPartr ';' BodyPart");
 			fBodyPartr();
-			if (!checkCategory(true, TokenCategory.semicolon)) {
+			if (!checkCategory(TokenCategory.semicolon)) {
 				unexpectedToken(";");
+			} else {
+				System.out.println(currentToken);
+				setNextToken(true);
 			}
 			fBodyPart();
-		} else if (checkCategory(true, TokenCategory.funRet)) {
+		} else if (checkCategory(TokenCategory.funRet)) {
 			printProduction("BodyPart", "'return' Return ';'");
+			System.out.println(currentToken);
+			setNextToken(true);
 			fReturn();
-			if (!checkCategory(true, TokenCategory.semicolon)) {
+			if (!checkCategory(TokenCategory.semicolon)) {
 				unexpectedToken(";");
+			} else {
+				System.out.println(currentToken);
+				setNextToken(true);
 			}
 		} else {
 			printProduction("BodyPart", epsilon);
@@ -308,8 +369,10 @@ public class Syntactic {
 	}
 	
 	public void fBodyPartr() {
-		if (checkCategory(true, TokenCategory.id)) {
+		if (checkCategory(TokenCategory.id)) {
 			printProduction("BodyPartr", "'id' ParamAttr");
+			System.out.println(currentToken);
+			setNextToken(true);
 			fParamAttr();
 		} else {
 			unexpectedToken("id");
@@ -317,21 +380,34 @@ public class Syntactic {
 	}
 	
 	public void fParamAttr() {
-		if (checkCategory(true, TokenCategory.paramBeg)) {
+		if (checkCategory(TokenCategory.paramBeg)) {
 			printProduction("ParamAttrib", "'(' LParamCall ')'");
+			System.out.println(currentToken);
+			setNextToken(true);
 			fLParamCall();
-			if (!checkCategory(true, TokenCategory.paramEnd)) {
+			if (!checkCategory(TokenCategory.paramEnd)) {
 				unexpectedToken(")");
+			} else {
+				System.out.println(currentToken);
+				setNextToken(true);
 			}
-		} else if (checkCategory(true, TokenCategory.opAttrib)) {
+		} else if (checkCategory(TokenCategory.opAttrib)) {
 			printProduction("ParamAttrib", "'=' Ec LAttr");
+			System.out.println(currentToken);
+			setNextToken(true);
 			fEc();
 			fLAttr();
-		} else if (checkCategory(true, TokenCategory.arrBegin)) {
+		} else if (checkCategory(TokenCategory.arrBegin)) {
 			printProduction("ParamAttrib", "'[' Ea ']' '=' Ec LAttr");
+			System.out.println(currentToken);
+			setNextToken(true);
 			fEa();
-			if (checkCategory(true, TokenCategory.arrEnd)) {
-				if (checkCategory(true, TokenCategory.opAttrib)) {
+			if (checkCategory(TokenCategory.arrEnd)) {
+				System.out.println(currentToken);
+				setNextToken(true);
+				if (checkCategory(TokenCategory.opAttrib)) {
+					System.out.println(currentToken);
+					setNextToken(true);
 					fEc();
 					fLAttr();
 				} else {
@@ -346,10 +422,14 @@ public class Syntactic {
 	}
 	
 	public void fLAttr() {
-		if (checkCategory(true, TokenCategory.commaSep)) {
+		if (checkCategory(TokenCategory.commaSep)) {
 			printProduction("LAttr", "',' Id '=' Ec LAttr");
+			System.out.println(currentToken);
+			setNextToken(true);
 			fId();
-			if (checkCategory(true, TokenCategory.opAttrib)) {
+			if (checkCategory(TokenCategory.opAttrib)) {
+				System.out.println(currentToken);
+				setNextToken(true);
 				fEc();
 				fLAttr();
 			} else {
@@ -361,7 +441,7 @@ public class Syntactic {
 	}
 	
 	public void fReturn() {
-		if (checkCategory(false, TokenCategory.paramBeg, TokenCategory.opSub, TokenCategory.constInt, TokenCategory.constBool, TokenCategory.constChar, TokenCategory.constFloat, TokenCategory.constStr, TokenCategory.id)) {
+		if (checkCategory(TokenCategory.paramBeg, TokenCategory.opSub, TokenCategory.constInt, TokenCategory.constBool, TokenCategory.constChar, TokenCategory.constFloat, TokenCategory.constStr, TokenCategory.id)) {
 			printProduction("Return", "Ec");
 			fEc();
 		} else {
@@ -370,14 +450,25 @@ public class Syntactic {
 	}
 	
 	public void fCommand() {
-		if (checkCategory(true, TokenCategory.print)) {
+		if (checkCategory(TokenCategory.print)) {
 			printProduction("Command", "'print' '(' 'constStr' PrintLParam ')' ';'");
-			if (checkCategory(true, TokenCategory.paramBeg)) {
-				if (checkCategory(true, TokenCategory.constStr)) {
+			System.out.println(currentToken);
+			setNextToken(true);
+			if (checkCategory(TokenCategory.paramBeg)) {
+				System.out.println(currentToken);
+				setNextToken(true);
+				if (checkCategory(TokenCategory.constStr)) {
+					System.out.println(currentToken);
+					setNextToken(true);
 					fPrintLParam();
-					if (checkCategory(true, TokenCategory.paramEnd)) {
-						if (!checkCategory(true, TokenCategory.semicolon)) {
+					if (checkCategory(TokenCategory.paramEnd)) {
+						System.out.println(currentToken);
+						setNextToken(true);
+						if (!checkCategory(TokenCategory.semicolon)) {
 							unexpectedToken(";");
+						} else {
+							System.out.println(currentToken);
+							setNextToken(true);
 						}
 					} else {
 						unexpectedToken(")");
@@ -388,13 +479,22 @@ public class Syntactic {
 			} else {
 				unexpectedToken("(");
 			}
-		} else if (checkCategory(true, TokenCategory.scan)) {
+		} else if (checkCategory(TokenCategory.scan)) {
 			printProduction("Command", "'scan' '(' ScanLParam ')' ';'");
-			if (checkCategory(true, TokenCategory.paramBeg)) {
+			System.out.println(currentToken);
+			setNextToken(true);
+			if (checkCategory(TokenCategory.paramBeg)) {
+				System.out.println(currentToken);
+				setNextToken(true);
 				fScanLParam();
-				if (checkCategory(true, TokenCategory.paramEnd)) {
-					if (!checkCategory(true, TokenCategory.semicolon)) {
+				if (checkCategory(TokenCategory.paramEnd)) {
+					System.out.println(currentToken);
+					setNextToken(true);
+					if (!checkCategory(TokenCategory.semicolon)) {
 						unexpectedToken(";");
+					} else {
+						System.out.println(currentToken);
+						setNextToken(true);
 					}
 				} else {
 					unexpectedToken(")");
@@ -402,11 +502,17 @@ public class Syntactic {
 			} else {
 				unexpectedToken("(");
 			}
-		} else if (checkCategory(true, TokenCategory.whileLoop)) {
+		} else if (checkCategory(TokenCategory.whileLoop)) {
 			printProduction("Command", "'whileLoop' '(' Eb ')' Body");
-			if (checkCategory(true, TokenCategory.paramBeg)) {
+			System.out.println(currentToken);
+			setNextToken(true);
+			if (checkCategory(TokenCategory.paramBeg)) {
+				System.out.println(currentToken);
+				setNextToken(true);
 				fEb();
-				if (checkCategory(true, TokenCategory.paramEnd)) {
+				if (checkCategory(TokenCategory.paramEnd)) {
+					System.out.println(currentToken);
+					setNextToken(true);
 					fBody();
 				} else {
 					unexpectedToken(")");
@@ -414,14 +520,22 @@ public class Syntactic {
 			} else {
 				unexpectedToken("(");
 			}
-		} else if (checkCategory(true, TokenCategory.forLoop)) {
+		} else if (checkCategory(TokenCategory.forLoop)) {
 			printProduction("Command", "'forLoop' ForParams");
+			System.out.println(currentToken);
+			setNextToken(true);
 			fForParams();
-		} else if (checkCategory(true, TokenCategory.condIf)) {
+		} else if (checkCategory(TokenCategory.condIf)) {
 			printProduction("Command", "'condIf' '(' Eb ')' Body Ifr");
-			if (checkCategory(true, TokenCategory.paramBeg)) {
+			System.out.println(currentToken);
+			setNextToken(true);
+			if (checkCategory(TokenCategory.paramBeg)) {
+				System.out.println(currentToken);
+				setNextToken(true);
 				fEb();
-				if (checkCategory(true, TokenCategory.paramEnd)) {
+				if (checkCategory(TokenCategory.paramEnd)) {
+					System.out.println(currentToken);
+					setNextToken(true);
 					fBody();
 					fIfr();
 				} else {
@@ -436,8 +550,10 @@ public class Syntactic {
 	}
 	
 	public void fPrintLParam() {
-		if (checkCategory(true, TokenCategory.commaSep)) {
+		if (checkCategory(TokenCategory.commaSep)) {
 			printProduction("PrintLParam", "',' Ec PrintLParam");
+			System.out.println(currentToken);
+			setNextToken(true);
 			fEc();
 			fPrintLParam();
 		} else {
@@ -446,8 +562,10 @@ public class Syntactic {
 	}
 	
 	public void fScanLParam() {
-		if (checkCategory(true, TokenCategory.id)) {
+		if (checkCategory(TokenCategory.id)) {
 			printProduction("ScanLParam", "'id' ArrayOpt ScanLParamr");
+			System.out.println(currentToken);
+			setNextToken(true);
 			fArrayOpt();
 			fScanLParamr();
 		} else {
@@ -456,9 +574,13 @@ public class Syntactic {
 	}
 	
 	public void fScanLParamr() {
-		if (checkCategory(true, TokenCategory.commaSep)) {
+		if (checkCategory(TokenCategory.commaSep)) {
 			printProduction("ScanLParamr", "',' 'id' ArrayOpt ScanLParamr");
-			if (checkCategory(true, TokenCategory.id)) {
+			System.out.println(currentToken);
+			setNextToken(true);
+			if (checkCategory(TokenCategory.id)) {
+				System.out.println(currentToken);
+				setNextToken(true);
 				fArrayOpt();
 				fScanLParamr();
 			} else {
@@ -470,18 +592,34 @@ public class Syntactic {
 	}
 	
 	public void fForParams() {
-		if (checkCategory(true, TokenCategory.paramBeg)) {
+		if (checkCategory(TokenCategory.paramBeg)) {
 			printProduction("ForParams", "'(' 'typeInt' 'id' ':' '(' Ea ',' Ea ForStep ')' ')' Body");
-			if (checkCategory(true, TokenCategory.typeInt)) {
-				if (checkCategory(true, TokenCategory.id)) {
-					if (checkCategory(true, TokenCategory.colon)) {
-						if (checkCategory(true, TokenCategory.paramBeg)) {
+			System.out.println(currentToken);
+			setNextToken(true);
+			if (checkCategory(TokenCategory.typeInt)) {
+				System.out.println(currentToken);
+				setNextToken(true);
+				if (checkCategory(TokenCategory.id)) {
+					System.out.println(currentToken);
+					setNextToken(true);
+					if (checkCategory(TokenCategory.colon)) {
+						System.out.println(currentToken);
+						setNextToken(true);
+						if (checkCategory(TokenCategory.paramBeg)) {
+							System.out.println(currentToken);
+							setNextToken(true);
 							fEa();
-							if (checkCategory(true, TokenCategory.commaSep)) {
+							if (checkCategory(TokenCategory.commaSep)) {
+								System.out.println(currentToken);
+								setNextToken(true);
 								fEa();
 								fForStep();
-								if (checkCategory(true, TokenCategory.paramEnd)) {
-									if (checkCategory(true, TokenCategory.paramEnd)) {
+								if (checkCategory(TokenCategory.paramEnd)) {
+									System.out.println(currentToken);
+									setNextToken(true);
+									if (checkCategory(TokenCategory.paramEnd)) {
+										System.out.println(currentToken);
+										setNextToken(true);
 										fBody();
 									} else {
 										unexpectedToken(")");
@@ -510,8 +648,10 @@ public class Syntactic {
 	}
 	
 	public void fForStep() {
-		if (checkCategory(true, TokenCategory.commaSep)) {
+		if (checkCategory(TokenCategory.commaSep)) {
 			printProduction("ForStep", "',' Ea");
+			System.out.println(currentToken);
+			setNextToken(true);
 			fEa();
 		} else {
 			printProduction("ForStep", epsilon);
@@ -519,11 +659,17 @@ public class Syntactic {
 	}
 	
 	public void fIfr() {
-		if (checkCategory(true, TokenCategory.condElseIf)) {
+		if (checkCategory(TokenCategory.condElseIf)) {
 			printProduction("Ifr", "'condElseIf' '(' Eb ')' Body Ifr");
-			if (checkCategory(true, TokenCategory.paramBeg)) {
+			System.out.println(currentToken);
+			setNextToken(true);
+			if (checkCategory(TokenCategory.paramBeg)) {
+				System.out.println(currentToken);
+				setNextToken(true);
 				fEb();
-				if (checkCategory(true, TokenCategory.paramEnd)) {
+				if (checkCategory(TokenCategory.paramEnd)) {
+					System.out.println(currentToken);
+					setNextToken(true);
 					fBody();
 					fIfr();
 				} else {
@@ -532,8 +678,10 @@ public class Syntactic {
 			} else {
 				unexpectedToken("(");
 			}
-		} else if (checkCategory(true, TokenCategory.condElse)) {
+		} else if (checkCategory(TokenCategory.condElse)) {
 			printProduction("Ifr", "'condElse' Body");
+			System.out.println(currentToken);
+			setNextToken(true);
 			fBody();
 		} else {
 			printProduction("Ifr", epsilon);
@@ -547,8 +695,10 @@ public class Syntactic {
 	}
 	
 	public void fEcr() {
-		if (checkCategory(true, TokenCategory.opConcat)) {
+		if (checkCategory(TokenCategory.opConcat)) {
 			printProduction("Ecr", "'opConcat' Fc Ecr");
+			System.out.println(currentToken);
+			setNextToken(true);
 			fEb();
 			fEcr();
 		} else {
@@ -563,8 +713,10 @@ public class Syntactic {
 	}
 	
 	public void fEbr() {
-		if (checkCategory(true, TokenCategory.opOr)) {
+		if (checkCategory(TokenCategory.opOr)) {
 			printProduction("Ebr", "'opOr' Tb Ebr");
+			System.out.println(currentToken);
+			setNextToken(true);
 			fTb();
 			fEbr();
 		} else {
@@ -579,8 +731,10 @@ public class Syntactic {
 	}
 	
 	public void fTbr() {
-		if (checkCategory(true, TokenCategory.opAnd)) {
+		if (checkCategory(TokenCategory.opAnd)) {
 			printProduction("Tbr", "'opAnd' Fb Tbr");
+			System.out.println(currentToken);
+			setNextToken(true);
 			fFb();
 			fTbr();
 		} else {
@@ -589,10 +743,12 @@ public class Syntactic {
 	}
 	
 	public void fFb() {
-		if (checkCategory(true, TokenCategory.opNot)) {
+		if (checkCategory(TokenCategory.opNot)) {
 			printProduction("Fb", "'opNot' Fb");
+			System.out.println(currentToken);
+			setNextToken(true);
 			fFb();
-		} else if (checkCategory(false, TokenCategory.paramBeg, TokenCategory.opSub, TokenCategory.constInt, TokenCategory.constBool, TokenCategory.constChar, TokenCategory.constFloat, TokenCategory.constStr, TokenCategory.id)) {
+		} else if (checkCategory(TokenCategory.paramBeg, TokenCategory.opSub, TokenCategory.constInt, TokenCategory.constBool, TokenCategory.constChar, TokenCategory.constFloat, TokenCategory.constStr, TokenCategory.id)) {
 			printProduction("Fb", "Ra Fbr");
 			fRa();
 			fFbr();
@@ -602,20 +758,28 @@ public class Syntactic {
 	}
 	
 	public void fFbr() {
-		if (checkCategory(true, TokenCategory.opGreater)) {
+		if (checkCategory(TokenCategory.opGreater)) {
 			printProduction("Fbr", "'opGreater' Ra Fbr");
+			System.out.println(currentToken);
+			setNextToken(true);
 			fRa();
 			fFbr();
-		} else if (checkCategory(true, TokenCategory.opLesser)) {
+		} else if (checkCategory(TokenCategory.opLesser)) {
 			printProduction("Fbr", "'opLesser' Ra Fbr");
+			System.out.println(currentToken);
+			setNextToken(true);
 			fRa();
 			fFbr();
-		} else if (checkCategory(true, TokenCategory.opGreq)) {
+		} else if (checkCategory(TokenCategory.opGreq)) {
 			printProduction("Fbr", "'opGreq' Ra Fbr");
+			System.out.println(currentToken);
+			setNextToken(true);
 			fRa();
 			fFbr();
-		} else if (checkCategory(true, TokenCategory.opLeq)) {
+		} else if (checkCategory(TokenCategory.opLeq)) {
 			printProduction("Fbr", "'opLeq' Ra Fbr");
+			System.out.println(currentToken);
+			setNextToken(true);
 			fRa();
 			fFbr();
 		} else {
@@ -630,12 +794,16 @@ public class Syntactic {
 	}
 	
 	public void fRar() {
-		if (checkCategory(true, TokenCategory.opEquals)) {
+		if (checkCategory(TokenCategory.opEquals)) {
 			printProduction("Rar", "'opEquals' Ea Rar");
+			System.out.println(currentToken);
+			setNextToken(true);
 			fEa();
 			fRar();
-		} else if (checkCategory(true, TokenCategory.opNotEqual)) {
+		} else if (checkCategory(TokenCategory.opNotEqual)) {
 			printProduction("Rar", "'opNotEqual' Ea Rar");
+			System.out.println(currentToken);
+			setNextToken(true);
 			fEa();
 			fRar();
 		} else {
@@ -650,12 +818,16 @@ public class Syntactic {
 	}
 	
 	public void fEar() {
-		if (checkCategory(true, TokenCategory.opAdd)) {
+		if (checkCategory(TokenCategory.opAdd)) {
 			printProduction("Ear", "'opAdd' Ta Ear");
+			System.out.println(currentToken);
+			setNextToken(true);
 			fTa();
 			fEar();
-		} else if (checkCategory(true, TokenCategory.opSub)) {
+		} else if (checkCategory(TokenCategory.opSub)) {
 			printProduction("Ear", "'opSub' Ta Ear");
+			System.out.println(currentToken);
+			setNextToken(true);
 			fTa();
 			fEar();
 		} else {
@@ -670,12 +842,16 @@ public class Syntactic {
 	}
 	
 	public void fTar() {
-		if (checkCategory(true, TokenCategory.opMult)) {
+		if (checkCategory(TokenCategory.opMult)) {
 			printProduction("Tar", "'opMult' Pa Tar");
+			System.out.println(currentToken);
+			setNextToken(true);
 			fPa();
 			fTar();
-		} else if (checkCategory(true, TokenCategory.opDiv)) {
+		} else if (checkCategory(TokenCategory.opDiv)) {
 			printProduction("Tar", "'opDiv' Pa Tar");
+			System.out.println(currentToken);
+			setNextToken(true);
 			fPa();
 			fTar();
 		} else {
@@ -690,8 +866,10 @@ public class Syntactic {
 	}
 	
 	public void fPar() {
-		if (checkCategory(true, TokenCategory.opPow)) {
+		if (checkCategory(TokenCategory.opPow)) {
 			printProduction("Par", "'opPow' Fa Par");
+			System.out.println(currentToken);
+			setNextToken(true);
 			fFa();
 			fPar();
 		} else {
@@ -700,35 +878,54 @@ public class Syntactic {
 	}
 	
 	public void fFa() {
-		if (checkCategory(true, TokenCategory.paramBeg)) {
+		if (checkCategory(TokenCategory.paramBeg)) {
 			printProduction("Fa", "'(' Ec ')'");
+			System.out.println(currentToken);
+			setNextToken(true);
 			fEc();
-			if (!checkCategory(true, TokenCategory.paramEnd)) {
+			if (!checkCategory(TokenCategory.paramEnd)) {
 				unexpectedToken(")");
+			} else {
+				System.out.println(currentToken);
+				setNextToken(true);
 			}
-		} else if (checkCategory(true, TokenCategory.opSub)) {
+		} else if (checkCategory(TokenCategory.opSub)) {
 			printProduction("Fa", "'opSub' Fa");
+			System.out.println(currentToken);
+			setNextToken(true);
 			fFa();
-		} else if (checkCategory(false, TokenCategory.id)) {
+		} else if (checkCategory(TokenCategory.id)) {
 			fIdOrFunCall();
-		} else if (checkCategory(true, TokenCategory.constBool)) {
+		} else if (checkCategory(TokenCategory.constBool)) {
 			printProduction("Fa", "'constBool'");
-		} else if (checkCategory(true, TokenCategory.constChar)) {
+			System.out.println(currentToken);
+			setNextToken(true);
+		} else if (checkCategory(TokenCategory.constChar)) {
 			printProduction("Fa", "'constChar'");
-		} else if (checkCategory(true, TokenCategory.constFloat)) {
+			System.out.println(currentToken);
+			setNextToken(true);
+		} else if (checkCategory(TokenCategory.constFloat)) {
 			printProduction("Fa", "'constFloat'");
-		} else if (checkCategory(true, TokenCategory.constInt)) {
+			System.out.println(currentToken);
+			setNextToken(true);
+		} else if (checkCategory(TokenCategory.constInt)) {
 			printProduction("Fa", "'constInt'");
-		} else if (checkCategory(true, TokenCategory.constStr)) {
+			System.out.println(currentToken);
+			setNextToken(true);
+		} else if (checkCategory(TokenCategory.constStr)) {
 			printProduction("Fa", "'constStr'");
+			System.out.println(currentToken);
+			setNextToken(true);
 		} else {
 			unexpectedToken("constBool, constChar, constFloat, constInt, constStr");
 		}
 	}
 	
 	public void fIdOrFunCall() {
-		if (checkCategory(true, TokenCategory.id)) {
+		if (checkCategory(TokenCategory.id)) {
 			printProduction("IdOrFunCall", "'id' IdOrFunCallr");
+			System.out.println(currentToken);
+			setNextToken(true);
 			fIdOrFunCallr();
 		} else {
 			unexpectedToken("id");
@@ -736,17 +933,27 @@ public class Syntactic {
 	}
 	
 	public void fIdOrFunCallr() {
-		if (checkCategory(true, TokenCategory.paramBeg)) {
+		if (checkCategory(TokenCategory.paramBeg)) {
 			printProduction("IdOrFunCallr", "'(' LParamCall ')'");
+			System.out.println(currentToken);
+			setNextToken(true);
 			fLParamCall();
-			if (!checkCategory(true, TokenCategory.paramEnd)) {
+			if (!checkCategory(TokenCategory.paramEnd)) {
 				unexpectedToken(")");
+			} else {
+				System.out.println(currentToken);
+				setNextToken(true);
 			}
-		} else if (checkCategory(true, TokenCategory.arrBegin)) {
+		} else if (checkCategory(TokenCategory.arrBegin)) {
 			printProduction("IdOrFunCallr", "'[' Ea ']'");
+			System.out.println(currentToken);
+			setNextToken(true);
 			fEa();
-			if (!checkCategory(true, TokenCategory.arrEnd)) {
+			if (!checkCategory(TokenCategory.arrEnd)) {
 				unexpectedToken("]");
+			} else {
+				System.out.println(currentToken);
+				setNextToken(true);
 			}
 		} else {
 			printProduction("IdOrFunCallr", epsilon);
